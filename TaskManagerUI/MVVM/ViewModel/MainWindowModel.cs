@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using TaskManagerUI.Core;
 using TaskManagerUI.MVVM.Model;
@@ -18,7 +19,7 @@ namespace TaskManagerUI.MVVM.ViewModel
         public MainWindowModel()
         {
 
-            Tasks = new List<TaskStruct>();
+            Tasks = new ObservableCollection<TaskStruct>();
 
             for (int i = 0; i < 2000; i++)
             {
@@ -35,19 +36,8 @@ namespace TaskManagerUI.MVVM.ViewModel
             }
         }
 
-        //public ObservableCollection<TaskStruct> _tasks;
-        //public ObservableCollection<TaskStruct> Tasks
-        //{
-        //    get { return _tasks; }
-        //    set
-        //    {
-        //        _tasks = value;
-        //        OnPropertyChanged("Tasks");
-        //    }
-        //}
-
-        public List<TaskStruct> _tasks;
-        public List<TaskStruct> Tasks
+        public ObservableCollection<TaskStruct> _tasks;
+        public ObservableCollection<TaskStruct> Tasks
         {
             get { return _tasks; }
             set
@@ -75,7 +65,7 @@ namespace TaskManagerUI.MVVM.ViewModel
                                 task.User = "";
                         }
 
-                        List<TaskStruct> temp = new List<TaskStruct>();
+                        ObservableCollection<TaskStruct> temp = new ObservableCollection<TaskStruct>();
                         foreach(TaskStruct t in Tasks)
                         {
                             if (t.IsChecked)
@@ -88,33 +78,6 @@ namespace TaskManagerUI.MVVM.ViewModel
                         }
                         Tasks.Clear();
                         Tasks = temp;
-
-                        //Tasks.OrderBy(item => item.IsChecked ? 0 : 1);
-                        //List<TaskStruct> tmpTasks = new List<TaskStruct>();
-                        //foreach(TaskStruct t in Tasks)
-                        //{
-                        //    if (t.IsChecked)
-                        //        tmpTasks.Add(t);
-                        //}
-
-                        //foreach (TaskStruct t in Tasks)
-                        //{
-                        //    if (!t.IsChecked)
-                        //        tmpTasks.Add(t);
-                        //}
-
-                        //Tasks.Clear();
-                        //foreach (TaskStruct t in tmpTasks)
-                        //{
-                        //    Tasks.Add(t);
-                        //}
-
-                        //ObservableCollection<TaskStruct> temp;
-                        //temp = new ObservableCollection<TaskStruct>(Tasks.OrderBy(item => item.IsChecked));
-                        //Tasks = temp;
-
-                        //CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(Tasks);
-                        //view.SortDescriptions.Add(new SortDescription("Age", ListSortDirection.Ascending));
 
                     }));
             }
@@ -141,8 +104,35 @@ namespace TaskManagerUI.MVVM.ViewModel
                 return _closeTask ?? (_closeTask = new RelayCommand(
                     obj =>
                     {
+                        TaskStruct task = Tasks.FirstOrDefault(item => item == (TaskStruct)obj);
+                        if (task != null)
+                            Tasks.Remove(task);
+                    }));
+            }
+        }
 
-
+        private RelayCommand _closeApplication;
+        public RelayCommand CloseApplication
+        {
+            get
+            {
+                return _closeApplication ?? (_closeApplication = new RelayCommand(
+                    obj =>
+                    {
+                        Application.Current.MainWindow.Close();
+                    }));
+            }
+        }
+       
+        private RelayCommand _hideApplication;
+        public RelayCommand HideApplication
+        {
+            get
+            {
+                return _hideApplication ?? (_hideApplication = new RelayCommand(
+                    obj =>
+                    {
+                        Application.Current.MainWindow.WindowState = WindowState.Minimized;
                     }));
             }
         }

@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sneep.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mvvm/view/icon.jpg")]
 
 

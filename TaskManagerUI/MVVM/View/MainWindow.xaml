@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         x:Name="GeneralWindow"
         Title="MainWindow" Height="648" Width="380" AllowsTransparency="True"
-        Background="Transparent" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Background="Transparent" WindowStyle="None" MouseLeftButtonDown="Window_MouseLeftButtonDown" Icon="icon.jpg">
     <Window.DataContext>
         <vm:MainWindowModel />
     </Window.DataContext>
@@ -41,10 +41,10 @@
             </Grid.RowDefinitions>
             <!--button control-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button Margin="10 12 5 0" Width="22" Height="22" Padding="3" >
+                <Button Margin="10 12 5 0" Width="22" Height="22" Padding="3" Command="{Binding HideApplication}">
                     <materialDesign:PackIcon Kind="Minus" Width="12"/>
                 </Button>
-                <Button Margin="5 12 15 0" Width="22" Height="22" Padding="3" >
+                <Button Margin="5 12 15 0" Width="22" Height="22" Padding="3" Command="{Binding CloseApplication}">
                     <materialDesign:PackIcon Kind="Close" Width="12" />
                 </Button>
             </StackPanel>
