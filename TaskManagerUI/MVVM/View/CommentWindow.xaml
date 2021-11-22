@@ -34,11 +34,12 @@
                 Margin="10,10,10,0"
                 AcceptsReturn="True"
                 VerticalScrollBarVisibility="Auto"
-                materialDesign:HintAssist.Hint="{Binding CurrentUser}"/>
+                materialDesign:HintAssist.Hint="{Binding CurrentUser}"
+                Text="{Binding TextComment}"/>
 
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Margin="0" Width="122" Height="32" Padding="3">
-                    <materialDesign:PackIcon Kind="Minus" Width="12"/>
+                <Button Margin="0" Width="122" Height="32" Padding="3" Command="{Binding SetComment}">
+                    <materialDesign:PackIcon Kind="Check" />
                 </Button>
             </StackPanel>
 

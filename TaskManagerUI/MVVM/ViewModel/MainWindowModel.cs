@@ -36,13 +36,13 @@ namespace TaskManagerUI.MVVM.ViewModel
             }
         }
 
-        public ObservableCollection<TaskStruct> _tasks;
+
         public ObservableCollection<TaskStruct> Tasks
         {
-            get { return _tasks; }
+            get { return Repository.GetRepository().Tasks; }
             set
             {
-                _tasks = value;
+                Repository.GetRepository().Tasks = value;
                 OnPropertyChanged("Tasks");
             }
         }
@@ -91,7 +91,13 @@ namespace TaskManagerUI.MVVM.ViewModel
                 return _setComment ?? (_setComment = new RelayCommand(
                     obj =>
                     {
-                        new View.CommentWindow().Show();
+                        TaskStruct task = Tasks.FirstOrDefault(item => item == (TaskStruct)obj);
+                        if (task != null)
+                        {
+                            Repository.GetRepository().SelectedTask = task;
+                            Repository.GetRepository().CommentWindow = new View.CommentWindow();
+                            Repository.GetRepository().CommentWindow.Show();
+                        }
                     }));
             }
         }

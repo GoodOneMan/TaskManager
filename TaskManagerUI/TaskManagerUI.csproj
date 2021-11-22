@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Core\BaseViewModel.cs" />
     <Compile Include="Core\RelayCommand.cs" />
+    <Compile Include="MVVM\Model\Repository.cs" />
     <Compile Include="MVVM\Model\TaskStruct.cs" />
     <Compile Include="MVVM\ViewModel\CommentWindowModel.cs" />
     <Compile Include="MVVM\ViewModel\MainWindowModel.cs" />
