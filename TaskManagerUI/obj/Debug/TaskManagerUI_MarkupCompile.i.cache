@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\App.xaml
-1-805053062
+2-1670088526
 
-10-644347201
+122009978590
 16-572869271
-MVVM\View\MainWindow.xaml;
+MVVM\View\CommentWindow.xaml;MVVM\View\MainWindow.xaml;
 
-False
+True
 

@@ -32,3 +32,5 @@ D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\ru\Syste
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\MVVM\View\CommentWindow.g.cs
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\MVVM\View\CommentWindow.baml

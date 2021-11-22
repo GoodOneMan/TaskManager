@@ -73,7 +73,11 @@
     <Compile Include="Core\BaseViewModel.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="MVVM\Model\TaskStruct.cs" />
+    <Compile Include="MVVM\ViewModel\CommentWindowModel.cs" />
     <Compile Include="MVVM\ViewModel\MainWindowModel.cs" />
+    <Compile Include="MVVM\View\CommentWindow.xaml.cs">
+      <DependentUpon>CommentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +111,10 @@
     <Resource Include="Sneep.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MVVM\View\CommentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

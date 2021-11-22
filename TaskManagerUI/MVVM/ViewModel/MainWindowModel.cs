@@ -91,7 +91,7 @@ namespace TaskManagerUI.MVVM.ViewModel
                 return _setComment ?? (_setComment = new RelayCommand(
                     obj =>
                     {
-                        
+                        new View.CommentWindow().Show();
                     }));
             }
         }
