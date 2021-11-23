@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\obj\Debug\
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\
 TaskManagerUI
 none
 false
 DEBUG;TRACE
-D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\App.xaml
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\App.xaml
 2-1670088526
 
-16315732200
-162074816671
+13572966875
+16-572869271
 MVVM\View\CommentWindow.xaml;MVVM\View\MainWindow.xaml;
 
 True

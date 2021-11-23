@@ -74,5 +74,16 @@ namespace TaskManagerUI.MVVM.Model
                 OnPropertyChanged("Comment");
             }
         }
+
+        private List<string> commentCard;
+        public List<string> CommentCard
+        {
+            get { return commentCard; }
+            set
+            {
+                commentCard = value;
+                OnPropertyChanged("CommentCard");
+            }
+        }
     }
 }

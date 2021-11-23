@@ -18,7 +18,6 @@ namespace TaskManagerUI.MVVM.ViewModel
         #region Test data
         public MainWindowModel()
         {
-
             Tasks = new ObservableCollection<TaskStruct>();
 
             for (int i = 0; i < 2000; i++)
@@ -29,7 +28,9 @@ namespace TaskManagerUI.MVVM.ViewModel
                     Description = "Description " + i.ToString(),
                     IsChecked = false,
                     State = false,
-                    User = ""
+                    User = "",
+                    Comment = "",
+                    CommentCard = new List<string>()
                 };
 
                 Tasks.Add(t);

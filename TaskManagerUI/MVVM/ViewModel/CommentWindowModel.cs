@@ -10,36 +10,41 @@ namespace TaskManagerUI.MVVM.ViewModel
 {
     class CommentWindowModel : BaseViewModel
     {
-        private string _currentUser;
-        public string CurrentUser
+
+        private string _message;
+        public string Message
         {
-            get {return _currentUser;}
+            get { return _message; }
             set
             {
-                _currentUser = value;
-                OnPropertyChanged("CurrentUser");
+                _message = value;
+                OnPropertyChanged("Message");
             }
         }
 
-        private string _textComment;
         public string TextComment
         {
             get
             {
-                if (Repository.GetRepository().SelectedTask.Comment != null)
-                    _textComment = Repository.GetRepository().SelectedTask.Comment;
-                return _textComment;
+                return Repository.GetRepository().SelectedTask.Comment;
             }
             set
             {
-                _textComment = value;
+                Repository.GetRepository().SelectedTask.Comment = value;
                 OnPropertyChanged("TextComment");
             }
         }
-
-        public CommentWindowModel()
+        public List<string> TextCommentCard
         {
-            CurrentUser = Environment.UserName;
+            get
+            {
+                return Repository.GetRepository().SelectedTask.CommentCard;
+            }
+            set
+            {
+                Repository.GetRepository().SelectedTask.CommentCard = value;
+                OnPropertyChanged("TextCommentCard");
+            }
         }
 
         private RelayCommand _setComment;
@@ -50,10 +55,19 @@ namespace TaskManagerUI.MVVM.ViewModel
                 return _setComment ?? (_setComment = new RelayCommand(
                     obj =>
                     {
-                        if(Repository.GetRepository().SelectedTask != null)
+                        //if(Repository.GetRepository().SelectedTask != null)
+                        //{
+                        //    if(!String.IsNullOrWhiteSpace(Message))
+                        //        Repository.GetRepository().SelectedTask.Comment += Environment.NewLine + Environment.UserName + Environment.NewLine + Message;
+
+                        //    Repository.GetRepository().CommentWindow.Close();
+                        //    Repository.GetRepository().SelectedTask = null;
+                        //}
+
+                        if (Repository.GetRepository().SelectedTask != null)
                         {
-                            Repository.GetRepository().SelectedTask.Comment += Environment.NewLine + Environment.UserName +
-                                                                           Environment.NewLine + TextComment;
+                            if (!String.IsNullOrWhiteSpace(Message))
+                                Repository.GetRepository().SelectedTask.CommentCard.Add(Environment.UserName + Environment.NewLine + Message);
 
                             Repository.GetRepository().CommentWindow.Close();
                             Repository.GetRepository().SelectedTask = null;
