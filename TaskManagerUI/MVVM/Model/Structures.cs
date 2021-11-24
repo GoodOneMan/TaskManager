@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManagerUI.Core;
+using System.ServiceModel;
+using System.Runtime.Serialization;
+
 
 namespace TaskManagerUI.MVVM.Model
 {
+    [DataContract]
     class TaskStruct : BaseViewModel
     {
         private string _title;
+        [DataMember]
         public string Title
         {
             get { return _title; }
@@ -21,6 +26,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private string _description;
+        [DataMember]
         public string Description
         {
             get { return _description; }
@@ -32,6 +38,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private string _user;
+        [DataMember]
         public string User
         {
             get { return _user; }
@@ -43,6 +50,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private bool _isChecked;
+        [DataMember]
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -54,6 +62,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private bool _state;
+        [DataMember]
         public bool State
         {
             get { return _state; }
@@ -65,6 +74,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private string _comment;
+        [DataMember]
         public string Comment
         {
             get { return _comment; }
@@ -76,6 +86,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private List<string> commentCard;
+        [DataMember]
         public List<string> CommentCard
         {
             get { return commentCard; }
@@ -87,6 +98,7 @@ namespace TaskManagerUI.MVVM.Model
         }
         
         private Guid _guidTask;
+        [DataMember]
         public Guid GuidTask
         {
             get { return _guidTask; }
@@ -98,9 +110,11 @@ namespace TaskManagerUI.MVVM.Model
         }
     }
 
+    [DataContract]
     class UserStruct : BaseViewModel
     {
         private Guid _userGuid;
+        [DataMember]
         public Guid UserGuid
         {
             get { return _userGuid; }
@@ -112,6 +126,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private string _name;
+        [DataMember]
         public string Name
         {
             get { return _name; }
@@ -123,6 +138,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private string _host;
+        [DataMember]
         public string Host
         {
             get { return _host; }
@@ -134,6 +150,7 @@ namespace TaskManagerUI.MVVM.Model
         }
 
         private ICollection<TaskStruct> _tasks;
+        [DataMember]
         public ICollection<TaskStruct> Tasks
         {
             get { return _tasks; }

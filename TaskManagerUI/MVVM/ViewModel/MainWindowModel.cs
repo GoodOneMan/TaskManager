@@ -38,14 +38,25 @@ namespace TaskManagerUI.MVVM.ViewModel
         }
 
         // Service property
-        public static 
+        public static TMService.TMServiceClient client;
 
         // Construct
         public MainWindowModel()
         {
             User = Tests.UserStructTest.GetCurrentUser();
             Tasks = new ObservableCollection<TaskStruct>(Tests.TaskStructTest.GetCollectionTasks());
-            
+
+            // client part
+            client = new TMService.TMServiceClient(new System.ServiceModel.InstanceContext(this));
+
+            TMService.UserStruct user = new TMService.UserStruct()
+            {
+                UserGuid = User.UserGuid,
+                Host = User.Host,
+                Name = User.Name
+            };
+
+            client.Connect(user);
         }
 
         // Command
