@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerUI", "TaskManagerUI\TaskManagerUI.csproj", "{64C50F75-1258-45C1-AFC4-3E7EC51B9707}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerWCF_Lib", "TaskManagerWCF_Lib\TaskManagerWCF_Lib.csproj", "{1D96BDCE-1010-47A5-9B0F-9F455478D488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerWCF_Host_console", "TaskManagerWCF_Host_console\TaskManagerWCF_Host_console.csproj", "{38D7FE58-2612-44BA-B09C-924FBF23E7F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{64C50F75-1258-45C1-AFC4-3E7EC51B9707}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64C50F75-1258-45C1-AFC4-3E7EC51B9707}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64C50F75-1258-45C1-AFC4-3E7EC51B9707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D96BDCE-1010-47A5-9B0F-9F455478D488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D96BDCE-1010-47A5-9B0F-9F455478D488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D96BDCE-1010-47A5-9B0F-9F455478D488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D96BDCE-1010-47A5-9B0F-9F455478D488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D7FE58-2612-44BA-B09C-924FBF23E7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D7FE58-2612-44BA-B09C-924FBF23E7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D7FE58-2612-44BA-B09C-924FBF23E7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D7FE58-2612-44BA-B09C-924FBF23E7F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

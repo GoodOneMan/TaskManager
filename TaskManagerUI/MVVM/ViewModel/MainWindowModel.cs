@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,30 +15,6 @@ namespace TaskManagerUI.MVVM.ViewModel
 {
     class MainWindowModel : BaseViewModel
     {
-
-        #region Test data
-        public MainWindowModel()
-        {
-            Tasks = new ObservableCollection<TaskStruct>();
-
-            for (int i = 0; i < 2000; i++)
-            {
-                TaskStruct t = new TaskStruct
-                {
-                    Title = "Task " + i.ToString(),
-                    Description = "Description " + i.ToString(),
-                    IsChecked = false,
-                    State = false,
-                    User = "",
-                    Comment = "",
-                    CommentCard = new List<string>()
-                };
-
-                Tasks.Add(t);
-            }
-        }
-
-
         public ObservableCollection<TaskStruct> Tasks
         {
             get { return Repository.GetRepository().Tasks; }
@@ -48,6 +25,24 @@ namespace TaskManagerUI.MVVM.ViewModel
             }
         }
 
+        private UserStruct _user;
+        public UserStruct User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                OnPropertyChanged("User");
+            }
+        }
+
+        public MainWindowModel()
+        {
+            User = Tests.UserStructTest.GetCurrentUser();
+            Tasks = new ObservableCollection<TaskStruct>(Tests.TaskStructTest.GetCollectionTasks());
+            
+        }
+
         private RelayCommand _isCheckedModel;
         public RelayCommand IsCheckedCommand
         {
@@ -56,18 +51,18 @@ namespace TaskManagerUI.MVVM.ViewModel
                 return _isCheckedModel ?? (_isCheckedModel = new RelayCommand(
                     obj =>
                     {
-                        TaskStruct task = Tasks.FirstOrDefault(item => item == (TaskStruct)obj);
+                        TaskStruct task = Tasks.FirstOrDefault(item => item.GuidTask == ((TaskStruct)obj).GuidTask);
 
-                        if(task != null)
+                        if (task != null)
                         {
-                            if(task.IsChecked)
+                            if (task.IsChecked)
                                 task.User = Environment.UserName;
                             else
                                 task.User = "";
                         }
 
                         ObservableCollection<TaskStruct> temp = new ObservableCollection<TaskStruct>();
-                        foreach(TaskStruct t in Tasks)
+                        foreach (TaskStruct t in Tasks)
                         {
                             if (t.IsChecked)
                                 temp.Add(t);
@@ -130,7 +125,7 @@ namespace TaskManagerUI.MVVM.ViewModel
                     }));
             }
         }
-       
+
         private RelayCommand _hideApplication;
         public RelayCommand HideApplication
         {
@@ -140,10 +135,19 @@ namespace TaskManagerUI.MVVM.ViewModel
                     obj =>
                     {
                         Application.Current.MainWindow.WindowState = WindowState.Minimized;
+
+                        // Test get list hosts
+                        //var list = ComputersInLocalNetwork.GetServerList(ComputersInLocalNetwork.SV_101_TYPES.SV_TYPE_ALL);
+                        //using (StreamWriter sw = new StreamWriter(@"D:\task_host.txt"))
+                        //{
+                        //    foreach(string str in list)
+                        //    {
+                        //        sw.WriteLine(str);
+                        //    }
+                        //}
                     }));
             }
         }
-        #endregion
 
     }
 }

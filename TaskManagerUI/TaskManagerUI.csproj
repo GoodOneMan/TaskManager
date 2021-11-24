@@ -68,12 +68,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\TaskStructTest.cs" />
+    <Compile Include="Tests\UserStructTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\BaseViewModel.cs" />
+    <Compile Include="Core\ComputersInLocalNetwork.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="MVVM\Model\Repository.cs" />
-    <Compile Include="MVVM\Model\TaskStruct.cs" />
+    <Compile Include="MVVM\Model\Structures.cs" />
     <Compile Include="MVVM\ViewModel\CommentWindowModel.cs" />
     <Compile Include="MVVM\ViewModel\MainWindowModel.cs" />
     <Compile Include="MVVM\View\CommentWindow.xaml.cs">

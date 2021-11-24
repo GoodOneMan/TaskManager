@@ -1,0 +1,10 @@
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\bin\Debug\TaskManagerWCF_Host_console.exe.config
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\bin\Debug\TaskManagerWCF_Host_console.exe
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\bin\Debug\TaskManagerWCF_Host_console.pdb
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\bin\Debug\TaskManagerWCF_Lib.dll
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\bin\Debug\TaskManagerWCF_Lib.pdb
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\obj\Debug\TaskManagerWCF_Host_console.csprojAssemblyReference.cache
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\obj\Debug\TaskManagerWCF_Host_console.csproj.CoreCompileInputs.cache
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\obj\Debug\TaskManagerWCF_Host_console.csproj.CopyComplete
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\obj\Debug\TaskManagerWCF_Host_console.exe
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerWCF_Host_console\obj\Debug\TaskManagerWCF_Host_console.pdb

@@ -6,7 +6,6 @@ D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\Material
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\MaterialDesignColors.pdb
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\bin\Debug\MaterialDesignThemes.Wpf.xml
-D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI.csprojAssemblyReference.cache
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\MVVM\View\MainWindow.g.cs
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\App.g.cs
 D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI_MarkupCompile.cache
@@ -70,3 +69,4 @@ D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\obj\Debug\Ta
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI.csproj.CopyComplete
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI.exe
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI.pdb
+D:\VisualStudio\TaskManager\TaskManagerSolution\TaskManagerUI\obj\Debug\TaskManagerUI.csprojAssemblyReference.cache

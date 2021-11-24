@@ -85,5 +85,63 @@ namespace TaskManagerUI.MVVM.Model
                 OnPropertyChanged("CommentCard");
             }
         }
+        
+        private Guid _guidTask;
+        public Guid GuidTask
+        {
+            get { return _guidTask; }
+            set 
+            { 
+                _guidTask = value;
+                OnPropertyChanged("GuidTask");
+            }
+        }
+    }
+
+    class UserStruct : BaseViewModel
+    {
+        private Guid _userGuid;
+        public Guid UserGuid
+        {
+            get { return _userGuid; }
+            set
+            {
+                _userGuid = value;
+                OnPropertyChanged("UserGuid");
+            }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+
+        private string _host;
+        public string Host
+        {
+            get { return _host; }
+            set
+            {
+                _host = value;
+                OnPropertyChanged("Host");
+            }
+        }
+
+        private ICollection<TaskStruct> _tasks;
+        public ICollection<TaskStruct> Tasks
+        {
+            get { return _tasks; }
+            set
+            {
+                _tasks = value;
+                OnPropertyChanged("Tasks");
+            }
+        }
     }
 }
