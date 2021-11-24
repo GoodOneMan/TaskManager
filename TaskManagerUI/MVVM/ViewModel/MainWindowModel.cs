@@ -13,8 +13,9 @@ using TaskManagerUI.MVVM.Model;
 
 namespace TaskManagerUI.MVVM.ViewModel
 {
-    class MainWindowModel : BaseViewModel
+    class MainWindowModel : BaseViewModel, TMService.ITMServiceCallback
     {
+        // Property
         public ObservableCollection<TaskStruct> Tasks
         {
             get { return Repository.GetRepository().Tasks; }
@@ -36,6 +37,10 @@ namespace TaskManagerUI.MVVM.ViewModel
             }
         }
 
+        // Service property
+        public static 
+
+        // Construct
         public MainWindowModel()
         {
             User = Tests.UserStructTest.GetCurrentUser();
@@ -43,6 +48,7 @@ namespace TaskManagerUI.MVVM.ViewModel
             
         }
 
+        // Command
         private RelayCommand _isCheckedModel;
         public RelayCommand IsCheckedCommand
         {
@@ -149,5 +155,33 @@ namespace TaskManagerUI.MVVM.ViewModel
             }
         }
 
+        // Service callback method
+        public void NotifyUpdataTasksCallback(TMService.TaskStruct _task)
+        {
+            var task = Tasks.FirstOrDefault(t => t.GuidTask == _task.GuidTask);
+
+            if(task != null)
+            {
+                task.User = _task.User;
+                task.IsChecked = _task.IsChecked;
+                task.State = _task.State;
+                task.User = _task.User;
+                task.CommentCard = new List<string>(_task.CommentCard);
+            }
+            else
+            {
+                Tasks.Add(new TaskStruct()
+                {
+                    Title = _task.Title,
+                    IsChecked = _task.IsChecked,
+                    State = _task.State,
+                    User = _task.User,
+                    GuidTask = _task.GuidTask,
+                    Description = _task.Description,
+                    Comment = _task.Comment,
+                    CommentCard = new List<string>(_task.CommentCard)
+                });
+            }
+        }
     }
 }

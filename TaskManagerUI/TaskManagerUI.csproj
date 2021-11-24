@@ -45,6 +45,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +69,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connected Services\TMService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Tests\TaskStructTest.cs" />
     <Compile Include="Tests\UserStructTest.cs" />
@@ -102,6 +109,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Connected Services\TMService\ITMService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TMService\ITMService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TMService\ITMService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TMService\ITMService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TMService\TMService.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -126,6 +146,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="MVVM\View\icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\TMService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TMService\ITMService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TMService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TMService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TMService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.3.0-ci89\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.3.0-ci89\build\MaterialDesignThemes.targets')" />
