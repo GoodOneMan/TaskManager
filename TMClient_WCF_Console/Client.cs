@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.ServiceModel;
 using System.Xml;
+using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace TMClient_WCF_Console
 {
@@ -82,15 +84,53 @@ namespace TMClient_WCF_Console
             factory = new DuplexChannelFactory<ITMService>(context, binding, endpoint);
             channel = factory.CreateChannel();
 
-            User user = channel.Connect();
+            user = channel.Connect();
 
-            Task[] tasks = channel.GetTasks();
+            //Thread.Sleep(10000);
+
+            #region OutData
+            Console.WriteLine("User " + user.Name + " " + user.Guid.ToString());
+            #endregion
 
 
-            int index = new Random().Next(0, 100000);
+
+            #region One
+
+            ObservableCollection<Task> tasks = channel.GetTasks();
+
+            Type type = tasks.GetType();
+
+            int index = new Random().Next(0, 1000);
             tasks[index].State = true;
+            tasks[index].User = user;
+
+            #region OutData
+            Console.WriteLine(index + " " + tasks[index].Guid.ToString());
+            #endregion
 
             channel.ChangeTask(tasks[index]);
+
+            #region OutData
+            Console.WriteLine("Call ChangeTask");
+            #endregion
+            Thread.Sleep(5000);
+
+            index = new Random().Next(0, 1000);
+            tasks[index].State = true;
+            tasks[index].User = user;
+
+            #region OutData
+            Console.WriteLine(index + " " + tasks[index].Guid.ToString());
+            #endregion
+
+            channel.ChangeTask(tasks[index]);
+
+            #region OutData
+            Console.WriteLine("Call ChangeTask");
+            #endregion
+            Thread.Sleep(5000);
+            #endregion
+
         }
 
         public void Disconnect()
@@ -98,18 +138,31 @@ namespace TMClient_WCF_Console
             if(channel != null)
             {
                 if(user != null)
+                {
                     channel.Disconnect(user.Guid);
+                    Console.WriteLine("Call Disconnect " + user.Guid.ToString());
+                }
+                    
 
                 factory = null;
                 channel = null;
+
+                #region OutData
+                Console.WriteLine("Call Disconnect");
+                #endregion
             }
-                
+
         }
 
         // Callback
         public void NotifyChangeTaskCallback(Task task)
         {
-            Console.WriteLine(task.Title + "  " + task.Guid);
+            Console.WriteLine("NotifyChangeTaskCallback  " + task.Title + "  " + task.Guid);
+        }
+
+        public void SendMessageCallback(string msg)
+        {
+            Console.WriteLine("SendMessageCallback  " + msg);
         }
     }
 }

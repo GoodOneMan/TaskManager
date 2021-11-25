@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace TMService_WCF_LIB
 {
@@ -34,8 +35,10 @@ namespace TMService_WCF_LIB
         public string Description { get; set; }
         [DataMember]
         public Guid Guid { get; set; }
+        //[DataMember]
+        //public Comment[] Comments { get; set; }
         [DataMember]
-        public Comment[] Comments { get; set; }
+        public ObservableCollection<Comment> Comments { get; set; }
         [DataMember]
         public bool IsChecked { get; set; }
         [DataMember]

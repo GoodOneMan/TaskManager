@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace TMClient_WCF_Console
 {
@@ -34,8 +35,10 @@ namespace TMClient_WCF_Console
         public string Description { get; set; }
         [DataMember]
         public Guid Guid { get; set; }
+        //[DataMember]
+        //public Comment[] Comments { get; set; }
         [DataMember]
-        public Comment[] Comments { get; set; }
+        public ObservableCollection<Comment> Comments { get; set; }
         [DataMember]
         public bool IsChecked { get; set; }
         [DataMember]
