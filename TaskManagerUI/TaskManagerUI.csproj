@@ -121,6 +121,9 @@
     <None Include="Connected Services\TMService\ITMService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\TMService\TaskManagerUI.TMService.TaskStruct.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\TMService\TMService.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

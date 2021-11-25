@@ -44,19 +44,45 @@ namespace TaskManagerUI.MVVM.ViewModel
         public MainWindowModel()
         {
             User = Tests.UserStructTest.GetCurrentUser();
-            Tasks = new ObservableCollection<TaskStruct>(Tests.TaskStructTest.GetCollectionTasks());
+            //Tasks = new ObservableCollection<TaskStruct>(Tests.TaskStructTest.GetCollectionTasks());
 
             // client part
             client = new TMService.TMServiceClient(new System.ServiceModel.InstanceContext(this));
 
-            TMService.UserStruct user = new TMService.UserStruct()
-            {
-                UserGuid = User.UserGuid,
-                Host = User.Host,
-                Name = User.Name
-            };
+            #region Two
+            var tasks = client.GetTasks();
 
-            client.Connect(user);
+            Tasks = new ObservableCollection<TaskStruct>();
+            foreach (var t in tasks)
+            {
+                Tasks.Add(
+                    new TaskStruct()
+                    {
+                        User = t.User,
+                        Title = t.Title,
+                        Comment = t.Comment,
+                        State = t.State,
+                        CommentCard = t.CommentCard.ToList(),
+                        Description = t.Description,
+                        GuidTask = t.GuidTask,
+                        IsChecked = t.IsChecked
+                    }
+                    );
+            }
+
+            
+            #endregion
+
+            #region One
+            //TMService.UserStruct user = new TMService.UserStruct()
+            //{
+            //    UserGuid = User.UserGuid,
+            //    Host = User.Host,
+            //    Name = User.Name
+            //};
+            //client.Connect(user);
+            #endregion
+
         }
 
         // Command
