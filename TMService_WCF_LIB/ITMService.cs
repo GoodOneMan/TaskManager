@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ServiceModel;
 
 namespace TMService_WCF_LIB
@@ -13,7 +14,7 @@ namespace TMService_WCF_LIB
         bool Disconnect(Guid guid);
 
         [OperationContract]
-        Task[] GetTasks();
+        ObservableCollection<Task> GetTasks();
 
         [OperationContract]
         void ChangeTask(Task task);
@@ -23,5 +24,7 @@ namespace TMService_WCF_LIB
     {
         [OperationContract(IsOneWay = true)]
         void NotifyChangeTaskCallback(Task task);
+        [OperationContract]
+        void SendMessageCallback(string msg);
     }
 }

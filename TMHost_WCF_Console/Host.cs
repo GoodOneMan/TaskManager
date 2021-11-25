@@ -46,6 +46,7 @@ namespace TMHost_WCF_Console
             binding.ReceiveTimeout = TimeSpan.MaxValue;
             binding.SendTimeout = TimeSpan.FromMinutes(10f);
 
+            #region Help
             // NetTcpBinding
             // CloseTimeout - Возвращает или задает интервал времени для закрытия подключения до того, как транспорт создаст исключение.(Унаследовано от Binding)
             // EnvelopeVersion - Возвращает версию протокола SOAP, используемого для сообщений, обрабатываемых этой привязкой.
@@ -70,6 +71,8 @@ namespace TMHost_WCF_Console
             // MaxDepth - Получает или задает максимальную глубину вложенного узла.
             // MaxNameTableCharCount - Получает или задает максимальное количество символов в имени таблицы.
             // MaxStringContentLength - Получает или задает максимальную длину строки, возвращаемую модулем чтения.
+            #endregion
+
             #endregion
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace TMService_WCF_LIB.Tests
 {
     class Datas
     {
-        public static List<Task> GetTasks()
+        public static ObservableCollection<Task> GetTasks()
         {
-            List<Task> tasks = new List<Task>();
+            ObservableCollection<Task> tasks = new ObservableCollection<Task>();
 
             for (int i = 0; i < 400000; i++)
             {
@@ -22,7 +23,8 @@ namespace TMService_WCF_LIB.Tests
                     State = false,
                     User = null,
                     Hint = "test datas",
-                    Comments = new List<Comment>().ToArray(),
+                    //Comments = new List<Comment>().ToArray(),
+                    Comments = new ObservableCollection<Comment>(),
                     Guid = Guid.NewGuid()
                 };
 

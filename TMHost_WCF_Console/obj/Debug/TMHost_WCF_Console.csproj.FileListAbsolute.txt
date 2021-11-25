@@ -8,3 +8,13 @@ D:\VisualStudio\TaskManager\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMH
 D:\VisualStudio\TaskManager\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.csproj.CopyComplete
 D:\VisualStudio\TaskManager\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.exe
 D:\VisualStudio\TaskManager\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.pdb
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\bin\Debug\TMHost_WCF_Console.exe.config
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\bin\Debug\TMHost_WCF_Console.exe
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\bin\Debug\TMHost_WCF_Console.pdb
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\bin\Debug\TMService_WCF_LIB.dll
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\bin\Debug\TMService_WCF_LIB.pdb
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.csprojAssemblyReference.cache
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.csproj.CoreCompileInputs.cache
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.csproj.CopyComplete
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.exe
+D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMHost_WCF_Console\obj\Debug\TMHost_WCF_Console.pdb

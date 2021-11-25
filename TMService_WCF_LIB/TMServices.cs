@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace TMService_WCF_LIB
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class TMServices : ITMService
     {
         #region Property
         private static List<User> Users = new List<User>();
-        private static List<Task> Tasks = new List<Task>();
+        private static ObservableCollection<Task> Tasks = new ObservableCollection<Task>();
         #endregion
 
         #region Method
@@ -42,16 +43,19 @@ namespace TMService_WCF_LIB
             else
                 return false;
         }
-         
-        public Task[] GetTasks()
+
+        public ObservableCollection<Task> GetTasks()
         {
             Tasks = Tests.Datas.GetTasks();
 
-            return Tasks.ToArray();
+            return Tasks;
         }
 
         public void ChangeTask(Task task)
         {
+            SendMassage("Massage Task " + task.Guid.ToString());
+            SendMassage("Massage User " + task.User.Guid.ToString());
+
             var t = Tasks.FirstOrDefault(item => item.Guid == task.Guid);
             if (t != null)
             {
@@ -62,7 +66,7 @@ namespace TMService_WCF_LIB
         }
         #endregion
 
-        // ITMServiceCallback
+        #region Callback Method
         public void NotifyChangeTask(Task task)
         {
             foreach(User user in Users)
@@ -70,5 +74,14 @@ namespace TMService_WCF_LIB
                 user.OCtx.GetCallbackChannel<ITMServiceCallback>().NotifyChangeTaskCallback(task);
             }
         }
+
+        public void SendMassage(string msg)
+        {
+            foreach (User user in Users)
+            {
+                user.OCtx.GetCallbackChannel<ITMServiceCallback>().SendMessageCallback(msg);
+            }
+        }
+        #endregion
     }
 }

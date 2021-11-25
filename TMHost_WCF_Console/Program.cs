@@ -14,12 +14,12 @@ namespace TMHost_WCF_Console
             var host = new Host();
 
             host.StartHost();
-
             Console.WriteLine("Host start ...");
-
             Console.ReadKey();
 
             host.StopHost();
+            Console.WriteLine("Host stop ...");
+            Console.ReadKey();
         }
     }
 }
