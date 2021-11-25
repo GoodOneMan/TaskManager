@@ -46,6 +46,7 @@
     <Compile Include="ITMService.cs" />
     <Compile Include="Struct\TaskStruct.cs" />
     <Compile Include="Struct\UserStruct.cs" />
+    <Compile Include="Tests\TaskStractTest.cs" />
     <Compile Include="TMService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

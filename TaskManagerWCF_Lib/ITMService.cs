@@ -16,7 +16,8 @@ namespace TaskManagerWCF_Lib
         Guid Connect(UserStruct user);
         [OperationContract]
         void Disconnect(Guid guid);
-
+        [OperationContract]
+        TaskStruct[] GetTasks();
         [OperationContract]
         void UpdataTasks(TaskStruct task);
     }

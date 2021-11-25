@@ -1,0 +1,6 @@
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\bin\Debug\TMService_WCF_LIB.dll
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\bin\Debug\TMService_WCF_LIB.pdb
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.csproj.CoreCompileInputs.cache
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.dll
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.pdb
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.csprojAssemblyReference.cache

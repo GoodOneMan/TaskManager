@@ -36,6 +36,11 @@ namespace TaskManagerWCF_Lib
                 users.Remove(user);
         }
 
+        public TaskStruct[] GetTasks()
+        {
+            return Tests.TaskStractTest.GetTasks();
+        }
+
         public void UpdataTasks(TaskStruct task)
         {
             throw new NotImplementedException();

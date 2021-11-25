@@ -28,10 +28,22 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetTasks">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTasksResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/TaskManagerWCF_Lib.Struct" minOccurs="0" name="GetTasksResult" nillable="true" type="q4:ArrayOfTaskStruct" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="UpdataTasks">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/TaskManagerWCF_Lib.Struct" minOccurs="0" name="task" nillable="true" type="q4:TaskStruct" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/TaskManagerWCF_Lib.Struct" minOccurs="0" name="task" nillable="true" type="q5:TaskStruct" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -43,7 +55,7 @@
   <xs:element name="NotifyUpdataTasksCallback">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/TaskManagerWCF_Lib.Struct" minOccurs="0" name="task" nillable="true" type="q5:TaskStruct" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/TaskManagerWCF_Lib.Struct" minOccurs="0" name="task" nillable="true" type="q6:TaskStruct" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

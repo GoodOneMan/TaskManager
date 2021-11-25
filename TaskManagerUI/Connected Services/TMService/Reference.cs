@@ -279,6 +279,12 @@ namespace TaskManagerUI.TMService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITMService/Disconnect", ReplyAction="http://tempuri.org/ITMService/DisconnectResponse")]
         System.Threading.Tasks.Task DisconnectAsync(System.Guid guid);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITMService/GetTasks", ReplyAction="http://tempuri.org/ITMService/GetTasksResponse")]
+        TaskManagerUI.TMService.TaskStruct[] GetTasks();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITMService/GetTasks", ReplyAction="http://tempuri.org/ITMService/GetTasksResponse")]
+        System.Threading.Tasks.Task<TaskManagerUI.TMService.TaskStruct[]> GetTasksAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITMService/UpdataTasks", ReplyAction="http://tempuri.org/ITMService/UpdataTasksResponse")]
         void UpdataTasks(TaskManagerUI.TMService.TaskStruct task);
         
@@ -335,6 +341,14 @@ namespace TaskManagerUI.TMService {
         
         public System.Threading.Tasks.Task DisconnectAsync(System.Guid guid) {
             return base.Channel.DisconnectAsync(guid);
+        }
+        
+        public TaskManagerUI.TMService.TaskStruct[] GetTasks() {
+            return base.Channel.GetTasks();
+        }
+        
+        public System.Threading.Tasks.Task<TaskManagerUI.TMService.TaskStruct[]> GetTasksAsync() {
+            return base.Channel.GetTasksAsync();
         }
         
         public void UpdataTasks(TaskManagerUI.TMService.TaskStruct task) {
