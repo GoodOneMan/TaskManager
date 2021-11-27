@@ -13,6 +13,10 @@ namespace TMHost_WCF_Console
         {
             var host = new Host();
 
+            host.InitHost();
+            Console.WriteLine("Host init ...");
+            //Console.ReadKey();
+
             host.StartHost();
             Console.WriteLine("Host start ...");
             Console.ReadKey();

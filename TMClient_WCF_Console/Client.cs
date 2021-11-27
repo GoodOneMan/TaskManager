@@ -22,11 +22,51 @@ namespace TMClient_WCF_Console
         public bool checkConnection = false;
         InstanceContext context = null;
 
-
-        public Client()
+        public void SomeWork()
         {
-            //address = new Uri("net.tcp://192.168.0.162:4004/ITMService");
-            address = new Uri("net.tcp://localhost:4004/ITMService");
+
+            user = new User()
+            {
+                Name = Environment.UserName,
+                Host = Dns.GetHostName(),
+                Description = "",
+                OCtx = null,
+                Guid = new Guid()
+            };
+
+            user.Guid = channel.Connect(user);
+
+            #region OutData
+            Console.WriteLine("User " + user.Name + "  " + user.Host);
+            #endregion
+
+            #region One
+            ObservableCollection<Task> tasks = channel.GetTasks();
+
+            foreach (Task task in tasks)
+            {
+                Console.WriteLine("Task " + task.Guid);
+            }
+
+            int index = new Random().Next(0, 1000);
+            tasks[index].User = user;
+
+            Thread.Sleep(5000);
+
+            Console.WriteLine(Environment.NewLine + index + " " + tasks[index].Guid);
+            Console.WriteLine(Environment.NewLine);
+
+            // Call callback
+            channel.ChangeTask(tasks[index]);
+
+            #endregion
+
+        }
+
+        public void Init()
+        {
+            address = new Uri("net.tcp://192.168.0.162:4004/ITMService");
+            //address = new Uri("net.tcp://localhost:4004/ITMService");
             binding = new NetTcpBinding();
             endpoint = new EndpointAddress(address);
             context = new InstanceContext(this);
@@ -80,57 +120,14 @@ namespace TMClient_WCF_Console
             // MaxNameTableCharCount - Получает или задает максимальное количество символов в имени таблицы.
             // MaxStringContentLength - Получает или задает максимальную длину строки, возвращаемую модулем чтения.
             #endregion
+        }
+
+        public void Connect()
+        {
+            Thread.Sleep(5000);
 
             factory = new DuplexChannelFactory<ITMService>(context, binding, endpoint);
             channel = factory.CreateChannel();
-
-            user = channel.Connect();
-
-            //Thread.Sleep(10000);
-
-            #region OutData
-            Console.WriteLine("User " + user.Name + " " + user.Guid.ToString());
-            #endregion
-
-
-
-            #region One
-
-            ObservableCollection<Task> tasks = channel.GetTasks();
-
-            Type type = tasks.GetType();
-
-            int index = new Random().Next(0, 1000);
-            tasks[index].State = true;
-            tasks[index].User = user;
-
-            #region OutData
-            Console.WriteLine(index + " " + tasks[index].Guid.ToString());
-            #endregion
-
-            channel.ChangeTask(tasks[index]);
-
-            #region OutData
-            Console.WriteLine("Call ChangeTask");
-            #endregion
-            Thread.Sleep(5000);
-
-            index = new Random().Next(0, 1000);
-            tasks[index].State = true;
-            tasks[index].User = user;
-
-            #region OutData
-            Console.WriteLine(index + " " + tasks[index].Guid.ToString());
-            #endregion
-
-            channel.ChangeTask(tasks[index]);
-
-            #region OutData
-            Console.WriteLine("Call ChangeTask");
-            #endregion
-            Thread.Sleep(5000);
-            #endregion
-
         }
 
         public void Disconnect()

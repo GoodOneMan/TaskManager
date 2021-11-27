@@ -17,7 +17,7 @@ namespace TMService_WCF_LIB.Tests
             {
                 Task t = new Task
                 {
-                    Title = "Task Service" + i.ToString(),
+                    Title = "Namber task - " + i.ToString(),
                     Description = "Description " + i.ToString(),
                     IsChecked = false,
                     State = false,

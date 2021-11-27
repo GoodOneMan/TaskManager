@@ -11,3 +11,4 @@ D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMClient_WCF_Console\obj\D
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMClient_WCF_Console\obj\Debug\TMClient_WCF_Console.exe
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMClient_WCF_Console\obj\Debug\TMClient_WCF_Console.pdb
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMClient_WCF_Console\obj\Debug\TMClient_WCF_Console.csprojAssemblyReference.cache
+D:\VisualStudio\TaskManager\TaskManagerSolution\TMClient_WCF_Console\obj\Debug\TMClient_WCF_Console.csprojAssemblyReference.cache

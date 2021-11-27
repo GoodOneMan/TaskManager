@@ -11,7 +11,16 @@ namespace TMClient_WCF_Console
         static void Main(string[] args)
         {
             Client client = new Client();
+
+            client.Init();
+            Console.WriteLine("Client init ...");
+
+            client.Connect();
             Console.WriteLine("Client connect ...");
+
+            Console.WriteLine("Client some work ...");
+            client.SomeWork();
+
 
             Console.ReadKey();
 
