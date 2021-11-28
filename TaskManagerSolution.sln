@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerUI", "TaskManagerUI\TaskManagerUI.csproj", "{64C50F75-1258-45C1-AFC4-3E7EC51B9707}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMHost_WCF_Console", "TMHost_WCF_Console\TMHost_WCF_Console.csproj", "{B125D2DE-8CDA-4CCE-93DA-FEE55F551F93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMClient_WCF_Console", "TMClient_WCF_Console\TMClient_WCF_Console.csproj", "{F307FB64-B85C-4EED-B77F-67DBCB435C71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Version 2", "Version 2", "{16749C2C-D197-409F-B792-58603F506061}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMServer_WPF", "TMServer_WPF\TMServer_WPF.csproj", "{67A9A477-9C74-40EC-A21C-7059A269916F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,10 @@ Global
 		{F307FB64-B85C-4EED-B77F-67DBCB435C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F307FB64-B85C-4EED-B77F-67DBCB435C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F307FB64-B85C-4EED-B77F-67DBCB435C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A9A477-9C74-40EC-A21C-7059A269916F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A9A477-9C74-40EC-A21C-7059A269916F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A9A477-9C74-40EC-A21C-7059A269916F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A9A477-9C74-40EC-A21C-7059A269916F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,9 @@ Global
 		{64C50F75-1258-45C1-AFC4-3E7EC51B9707} = {3D8F23D9-7351-4B36-B69C-38A2A2DCE6C2}
 		{1D96BDCE-1010-47A5-9B0F-9F455478D488} = {3D8F23D9-7351-4B36-B69C-38A2A2DCE6C2}
 		{38D7FE58-2612-44BA-B09C-924FBF23E7F7} = {3D8F23D9-7351-4B36-B69C-38A2A2DCE6C2}
+		{C1FF0E8F-B793-43FC-8671-1DC91F154DFB} = {16749C2C-D197-409F-B792-58603F506061}
+		{B125D2DE-8CDA-4CCE-93DA-FEE55F551F93} = {16749C2C-D197-409F-B792-58603F506061}
+		{F307FB64-B85C-4EED-B77F-67DBCB435C71} = {16749C2C-D197-409F-B792-58603F506061}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44196A36-516F-48C1-8C5F-51F3C1683F01}

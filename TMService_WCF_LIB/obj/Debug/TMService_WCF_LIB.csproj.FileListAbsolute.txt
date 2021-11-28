@@ -8,4 +8,3 @@ D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMService_WCF_LIB\bin\Debu
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.csproj.CoreCompileInputs.cache
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.dll
 D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.pdb
-D:\ProjectFolder\VisualStudio2017\TaskManagerSolution\TMService_WCF_LIB\obj\Debug\TMService_WCF_LIB.csprojAssemblyReference.cache

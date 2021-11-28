@@ -15,17 +15,21 @@ namespace TMClient_WCF_Console
             client.Init();
             Console.WriteLine("Client init ...");
 
-            client.Connect();
+            bool flag = client.Connect();
             Console.WriteLine("Client connect ...");
 
-            Console.WriteLine("Client some work ...");
-            client.SomeWork();
+            if (flag)
+            {
+                Console.WriteLine("Client some work ...");
+                client.SomeWork();
 
 
-            Console.ReadKey();
+                Console.ReadKey();
 
-            client.Disconnect();
-            Console.WriteLine("Client disconnect ...");
+                client.Disconnect();
+                Console.WriteLine("Client disconnect ...");
+            }
+            
 
             Console.ReadKey();
         }

@@ -1,0 +1,90 @@
+﻿<Window x:Class="TMServer_WPF.MVVM.View.StartWindow_View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:local="clr-namespace:TMServer_WPF.MVVM.View"
+        xmlns:vm="clr-namespace:TMServer_WPF.MVVM.ViewModel"
+        xmlns:localData="clr-namespace:TMServer_WPF.MVVM.Model"
+        mc:Ignorable="d"
+        Title="StartWindow_View" Height="450" Width="800"
+        Background="Transparent" WindowStyle="None" AllowsTransparency="True"
+        x:Name="SWindow"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    
+    <Window.DataContext>
+        <vm:StartWindow_ViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Background="#FFF2F3F0" CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition/>
+                <RowDefinition Height="44"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="98"/>
+            </Grid.ColumnDefinitions>
+
+            <!--button control-->
+            <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button Margin="10 12 5 0" Width="22" Height="22" Padding="3" Command="{Binding HideApplication}">
+                    <materialDesign:PackIcon Kind="Minus" Width="12"/>
+                </Button>
+                <Button Margin="5 12 15 0" Width="22" Height="22" Padding="3" Command="{Binding CloseApplication}">
+                    <materialDesign:PackIcon Kind="Close" Width="12" />
+                </Button>
+            </StackPanel>
+            <!---->
+            <GroupBox  Grid.Row="1" Grid.Column="0" Header="пользователи" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="12">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Users" Height="18"  Width="18" VerticalAlignment="Center" />
+                            <TextBlock 
+                                Margin="8,0,0,0" 
+                                VerticalAlignment="Center" Text="пользователи" />
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                
+                <!-- Users Data-->
+            </GroupBox>
+             <!---->
+            <GroupBox  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Header="задачи" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="12">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Hexagons" Height="18"  Width="18" VerticalAlignment="Center" />
+                            <TextBlock 
+                                Margin="8,0,0,0" 
+                                VerticalAlignment="Center"  Text="задачи"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                
+                <!-- Task Data -->
+                
+            </GroupBox>
+            <!---->
+            <StackPanel Margin="12 0 12 0" Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button Command="{Binding StartService}" ToolTip="запуск / остановка сервиса">
+                    <materialDesign:PackIcon Kind="Play"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

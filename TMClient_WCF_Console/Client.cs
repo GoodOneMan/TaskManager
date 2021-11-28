@@ -24,18 +24,7 @@ namespace TMClient_WCF_Console
 
         public void SomeWork()
         {
-
-            user = new User()
-            {
-                Name = Environment.UserName,
-                Host = Dns.GetHostName(),
-                Description = "",
-                OCtx = null,
-                Guid = new Guid()
-            };
-
-            user.Guid = channel.Connect(user);
-
+            
             #region OutData
             Console.WriteLine("User " + user.Name + "  " + user.Host);
             #endregion
@@ -65,8 +54,8 @@ namespace TMClient_WCF_Console
 
         public void Init()
         {
-            address = new Uri("net.tcp://192.168.0.162:4004/ITMService");
-            //address = new Uri("net.tcp://localhost:4004/ITMService");
+            //address = new Uri("net.tcp://192.168.0.162:4004/ITMService");
+            address = new Uri("net.tcp://localhost:4004/ITMService");
             binding = new NetTcpBinding();
             endpoint = new EndpointAddress(address);
             context = new InstanceContext(this);
@@ -122,12 +111,33 @@ namespace TMClient_WCF_Console
             #endregion
         }
 
-        public void Connect()
+        public bool Connect()
         {
             Thread.Sleep(5000);
+            
+            try
+            {
+                factory = new DuplexChannelFactory<ITMService>(context, binding, endpoint);
+                channel = factory.CreateChannel();
 
-            factory = new DuplexChannelFactory<ITMService>(context, binding, endpoint);
-            channel = factory.CreateChannel();
+                user = new User()
+                {
+                    Name = Environment.UserName,
+                    Host = Dns.GetHostName(),
+                    Description = "",
+                    OCtx = null,
+                    Guid = new Guid()
+                };
+
+                user.Guid = channel.Connect(user);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
         public void Disconnect()

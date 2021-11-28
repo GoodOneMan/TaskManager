@@ -18,8 +18,8 @@ namespace TMHost_WCF_Console
 
         public void InitHost()
         {
-            address = new Uri("net.tcp://192.168.0.162:4004/ITMService");  // ADDRESS.   (A)
-            //address = new Uri("net.tcp://localhost:4004/ITMService");
+            //address = new Uri("net.tcp://192.168.0.162:4004/ITMService");  // ADDRESS.   (A)
+            address = new Uri("net.tcp://localhost:4004/ITMService");
             binding = new NetTcpBinding();                                  // BINDING.   (B)
             contract = typeof(TMService_WCF_LIB.ITMService);
 
