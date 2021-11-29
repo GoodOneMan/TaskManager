@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2a502134-f0d1-4a7d-9eba-c17c862e4ddd" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8301/ITMService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TMService.wsdl" MetadataType="Wsdl" ID="f68a4b0a-37a6-4b4d-9a02-5d926a3731f5" SourceId="1" SourceUrl="http://localhost:8301/ITMService?wsdl" />
+    <MetadataFile FileName="ITMService.xsd" MetadataType="Schema" ID="87b9dbb6-a926-4d80-9bd8-77efd155eed9" SourceId="1" SourceUrl="http://localhost:8301/ITMService?xsd=xsd3" />
+    <MetadataFile FileName="ITMService.disco" MetadataType="Disco" ID="9bdad9f4-2b4e-476b-acf0-1c003fa08159" SourceId="1" SourceUrl="http://localhost:8301/ITMService?disco" />
+    <MetadataFile FileName="ITMService1.xsd" MetadataType="Schema" ID="c69a94b4-ff70-4589-867f-4fd72aed8246" SourceId="1" SourceUrl="http://localhost:8301/ITMService?xsd=xsd0" />
+    <MetadataFile FileName="ITMService2.xsd" MetadataType="Schema" ID="8cf1fd8b-cc25-4be1-95b6-c78c75773028" SourceId="1" SourceUrl="http://localhost:8301/ITMService?xsd=xsd1" />
+    <MetadataFile FileName="ITMService3.xsd" MetadataType="Schema" ID="9ee5b702-b8d6-44d8-834a-120fb317fb66" SourceId="1" SourceUrl="http://localhost:8301/ITMService?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
