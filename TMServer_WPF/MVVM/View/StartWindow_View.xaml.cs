@@ -28,5 +28,15 @@ namespace TMServer_WPF.MVVM.View
         {
             this.DragMove();
         }
+
+        private void PopupBox_OnOpened(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Just making sure the popup has opened.");
+        }
+
+        private void PopupBox_OnClosed(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Just making sure the popup has closed.");
+        }
     }
 }
