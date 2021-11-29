@@ -48,7 +48,7 @@
                     <materialDesign:PackIcon Kind="Close" Width="12" />
                 </Button>
             </StackPanel>
-            <!-- task list -->
+            <!-- Task list -->
             <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type localData:TaskStruct}" >

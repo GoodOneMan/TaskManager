@@ -43,6 +43,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,10 +67,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\Datas_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CORE\BaseViewModel.cs" />
     <Compile Include="CORE\RelayCommand.cs" />
+    <Compile Include="CORE\Structures.cs" />
     <Compile Include="MVVM\Model\Repository.cs" />
     <Compile Include="MVVM\ViewModel\StartWindow_ViewModel.cs" />
     <Compile Include="MVVM\View\StartWindow_View.xaml.cs">
