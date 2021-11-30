@@ -9,9 +9,30 @@ using TMServer_WPF.CORE;
 
 namespace TMServer_WPF.WCF
 {
+    public class UserChangedEventArgs : EventArgs
+    {
+        public readonly string Message;
+        public readonly User User;
+
+        public UserChangedEventArgs(string message, User user)
+        {
+            Message = message;
+            User = user;
+        }
+    }
+
     class Services : IContract_Service, IDataContract_Service
     {
+        #region Events
+        public static event EventHandler<UserChangedEventArgs> UserChanged;
+        protected virtual void OnUserConnect(UserChangedEventArgs e)
+        {
+            if (UserChanged != null) UserChanged(this, e);
+        }
+        #endregion
+
         #region Internal method
+
         Storage Storage = Storage.GetStorage();
 
         public Services()
@@ -40,6 +61,9 @@ namespace TMServer_WPF.WCF
                 Storage.Users.Add(user);
             }
 
+            // Call event
+            OnUserConnect(new UserChangedEventArgs("пользователь подключился ", user));
+
             return user;
         }
 
@@ -50,6 +74,10 @@ namespace TMServer_WPF.WCF
             if(user != null)
             {
                 Storage.Users.Remove(user);
+
+                // Call event
+                OnUserConnect(new UserChangedEventArgs("пользователь отключился ", user));
+
                 return true;
             }
 
@@ -92,7 +120,6 @@ namespace TMServer_WPF.WCF
 
         #endregion
 
-
-
+        
     }
 }

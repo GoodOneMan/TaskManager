@@ -78,6 +78,18 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("Tasks");
             }
         }
+
+        private ObservableCollection<string> _log;
+        public ObservableCollection<string> Log
+        {
+            get { return _log; }
+            set
+            {
+                _log = value;
+                OnPropertyChanged("Log");
+            }
+        }
+
         #endregion
 
         #region Command
@@ -163,6 +175,7 @@ namespace TMServer_WPF.MVVM.ViewModel
         public StartWindow_ViewModel()
         {
             Init();
+            WCF.Services.UserChanged += service_UserChangedEvent;
         }
 
         private void Init()
@@ -171,7 +184,19 @@ namespace TMServer_WPF.MVVM.ViewModel
             Users = Tests.Datas_Test.GetUsers();
             Tasks = Tests.Datas_Test.GetTasks();
 
+            //Log = new ObservableCollection<string>();
+
             HostServices = new WCF.HostServices();
+        }
+        #endregion
+
+        #region Events
+        public void service_UserChangedEvent(object sender, WCF.UserChangedEventArgs e)
+        {
+            if (Log == null)
+                Log = new ObservableCollection<string>();
+
+            Log.Add(e.Message + e.User.Name);
         }
         #endregion
     }

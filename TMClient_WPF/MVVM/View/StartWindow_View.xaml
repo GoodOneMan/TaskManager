@@ -32,48 +32,49 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Background="#FFF2F3F0" CornerRadius="10">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="56"/>
-                <RowDefinition />
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <!--button control-->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button Margin="10 12 5 0" Width="22" Height="22" Padding="3"  Command="{Binding MinWindow_Command}" CommandParameter="{Binding ElementName=SWindow}">
-                    <materialDesign:PackIcon Kind="Minus" Width="12"/>
-                </Button>
-                <Button Margin="5 12 15 0" Width="22" Height="22" Padding="3" Command="{Binding CloseWindow_Command}" CommandParameter="{Binding ElementName=SWindow}">
-                    <materialDesign:PackIcon Kind="Close" Width="12" />
-                </Button>
-            </StackPanel>
-            <!-- Task list -->
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type core:Task}" >
-                        <Border x:Name="Border" Padding="8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="Checkerz" />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="32"/>
-                                </Grid.ColumnDefinitions>
+    <Border Background="#FF40626C" CornerRadius="10">
+        <Border Background="#FFF2F3F0" CornerRadius="10" BorderThickness="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="56"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <!--button control-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Margin="10 12 5 0" Width="22" Height="22" Padding="3"  Command="{Binding MinWindow_Command}" CommandParameter="{Binding ElementName=SWindow}">
+                        <materialDesign:PackIcon Kind="Minus" Width="12"/>
+                    </Button>
+                    <Button Margin="5 12 15 0" Width="22" Height="22" Padding="3" Command="{Binding CloseWindow_Command}" CommandParameter="{Binding ElementName=SWindow}">
+                        <materialDesign:PackIcon Kind="Close" Width="12" />
+                    </Button>
+                </StackPanel>
+                <!-- Task list -->
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type core:Task}" >
+                            <Border x:Name="Border" Padding="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="32"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <CheckBox Grid.Column="0"
+                                    <CheckBox Grid.Column="0"
                                               IsChecked="{Binding IsChecked, Mode=TwoWay, NotifyOnTargetUpdated=True}" 
                                               Command="{Binding Path=DataContext.IsCheckedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               CommandParameter="{Binding}"/>
 
-                                <StackPanel  Margin="8 0 0 0" Grid.Column="1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Title}" Margin="8 0 0 0"/>
-                                        <TextBlock Text="{Binding User.Name}" Margin="8 0 0 0"/>
+                                    <StackPanel  Margin="8 0 0 0" Grid.Column="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}" Margin="8 0 0 0"/>
+                                            <TextBlock Text="{Binding User.Name}" Margin="8 0 0 0"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="0" Text="{Binding Description}" />
                                     </StackPanel>
-                                    <TextBlock Grid.Column="0" Text="{Binding Description}" />
-                                </StackPanel>
 
-                                <materialDesign:PopupBox Grid.Column="2"
+                                    <materialDesign:PopupBox Grid.Column="2"
                                                                      Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}" 
                                                                      Width="32"
                                                                      Height="32"
@@ -82,47 +83,48 @@
                                                                      ToolTip="выбрать действие" 
                                                                      Opened="PopupBox_OnOpened" 
                                                                      Closed="PopupBox_OnClosed">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button ToolTip="комментировать задачу"
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button ToolTip="комментировать задачу"
                                                     Command="{Binding Path=DataContext.SetCommentInTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
-                                            <materialDesign:PackIcon Kind="CommentTextOutline" />
-                                        </Button>
-                                        <Button ToolTip="завершить задачу"
+                                                <materialDesign:PackIcon Kind="CommentTextOutline" />
+                                            </Button>
+                                            <Button ToolTip="завершить задачу"
                                                     Command="{Binding Path=DataContext.CompletingTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
-                                            <materialDesign:PackIcon Kind="Power" />
-                                        </Button>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
+                                                <materialDesign:PackIcon Kind="Power" />
+                                            </Button>
+                                        </StackPanel>
+                                    </materialDesign:PopupBox>
 
-                            </Grid>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsChecked}" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel IsVirtualizing="True"
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsVirtualizing="True"
                               VirtualizationMode="Recycling" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.Template>
-                    <ControlTemplate TargetType="ItemsControl">
-                        <ScrollViewer CanContentScroll="True" Padding="{TemplateBinding Padding}" Focusable="False">
-                            <ItemsPresenter />
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ScrollViewer CanContentScroll="True" Padding="{TemplateBinding Padding}" Focusable="False">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
 
-            </ItemsControl>
+                </ItemsControl>
 
-        </Grid>
+            </Grid>
+        </Border>
     </Border>
 </Window>
