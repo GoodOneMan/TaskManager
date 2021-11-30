@@ -13,6 +13,7 @@ namespace TMServer_WPF.MVVM.ViewModel
         private bool isRun = false;
         private static string greenColor = "#8FBC8F";
         private static string redColor = "#CD5C5C";
+        WCF.HostServices HostServices = null;
 
         #region Property
         private string _buttonIcon = "Play";
@@ -138,6 +139,8 @@ namespace TMServer_WPF.MVVM.ViewModel
                             ButtonColor = greenColor;
                             TextColor = redColor;
                             Text = "сервер остановлен";
+
+                            HostServices.StopHost();
                         }
                         else
                         {
@@ -147,6 +150,9 @@ namespace TMServer_WPF.MVVM.ViewModel
                             ButtonColor = redColor;
                             TextColor = greenColor;
                             Text = "сервер запущен";
+
+                            HostServices.InitHost();
+                            HostServices.StartHost();
                         }
                     }));
             }
@@ -161,8 +167,11 @@ namespace TMServer_WPF.MVVM.ViewModel
 
         private void Init()
         {
+            // test data
             Users = Tests.Datas_Test.GetUsers();
             Tasks = Tests.Datas_Test.GetTasks();
+
+            HostServices = new WCF.HostServices();
         }
         #endregion
     }

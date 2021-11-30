@@ -8,5 +8,6 @@ namespace TMServer_WPF.MVVM.Model
 {
     class Repository
     {
+
     }
 }

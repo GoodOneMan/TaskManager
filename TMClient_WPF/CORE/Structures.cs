@@ -7,7 +7,7 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
 
-namespace TMServer_WPF.CORE
+namespace TMClient_WPF.CORE
 {
     // User
     [DataContract(Namespace = "TManager")]
@@ -59,23 +59,4 @@ namespace TMServer_WPF.CORE
         public string Message { get; set; }
     }
 
-    // Storage
-    public class Storage
-    {
-        private static Storage instance = null;
-        public static Storage GetStorage()
-        {
-            if (instance == null)
-                instance = new Storage();
-
-            return instance;
-        }
-
-        private Storage()
-        {
-            Users = new ObservableCollection<User>();
-        }
-
-        public ObservableCollection<User> Users;
-    }
 }
