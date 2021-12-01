@@ -21,6 +21,6 @@ namespace TMServer_WPF.WCF
     public interface IDataContract_Callback
     {
         [OperationContract(IsOneWay = true)]
-        void DataContractCallback(string msg);
+        void DataContractCallback(string msg, Task task);
     }
 }

@@ -94,6 +94,11 @@
                                                     CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="Power" />
                                             </Button>
+                                            <Button ToolTip="завершить задачу"
+                                                    Command="{Binding Path=DataContext.ChangedTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="TestTube" />
+                                            </Button>
                                         </StackPanel>
                                     </materialDesign:PopupBox>
 

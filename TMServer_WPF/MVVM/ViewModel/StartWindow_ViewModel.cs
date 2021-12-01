@@ -10,13 +10,14 @@ namespace TMServer_WPF.MVVM.ViewModel
 {
     class StartWindow_ViewModel : BaseViewModel
     {
-        private bool isRun = false;
-        private static string greenColor = "#8FBC8F";
-        private static string redColor = "#CD5C5C";
-        WCF.HostServices HostServices = null;
+        private bool isRun;
+        private static string GrayColor;
+        private static string RedColor;
+        private WCF.HostServices HostServices;
+        private Storage Storage;
 
         #region Property
-        private string _buttonIcon = "Play";
+        private string _buttonIcon;
         public string ButtonIcon
         {
             get { return _buttonIcon; }
@@ -26,7 +27,8 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("ButtonIcon");
             }
         }
-        private string _buttonColor = greenColor;
+        
+        private string _buttonColor;
         public string ButtonColor
         {
             get { return _buttonColor; }
@@ -36,7 +38,8 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("ButtonColor");
             }
         }
-        private string _textColor = redColor;
+        
+        private string _textColor;
         public string TextColor
         {
             get { return _textColor; }
@@ -46,7 +49,8 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("TextColor");
             }
         }
-        private string _text = "сервер не запущен";
+        
+        private string _text;
         public string Text
         {
             get { return _text; }
@@ -145,26 +149,11 @@ namespace TMServer_WPF.MVVM.ViewModel
                     {
                         if (isRun)
                         {
-                            // Stop service
-                            isRun = false;
-                            ButtonIcon = "Play";
-                            ButtonColor = greenColor;
-                            TextColor = redColor;
-                            Text = "сервер остановлен";
-
-                            HostServices.StopHost();
+                            InitStopService();
                         }
                         else
                         {
-                            // Start service
-                            isRun = true;
-                            ButtonIcon = "Stop";
-                            ButtonColor = redColor;
-                            TextColor = greenColor;
-                            Text = "сервер запущен";
-
-                            HostServices.InitHost();
-                            HostServices.StartHost();
+                            InitStartService();
                         }
                     }));
             }
@@ -174,29 +163,86 @@ namespace TMServer_WPF.MVVM.ViewModel
         #region Internal method
         public StartWindow_ViewModel()
         {
-            Init();
-            WCF.Services.UserChanged += service_UserChangedEvent;
+            InitWindow();
         }
 
-        private void Init()
+        private void InitWindow()
         {
+            // internal 
+            isRun = false;
+            GrayColor = "#40626C";
+            RedColor = "#AE6E64";
+            HostServices = null;
+            Storage = Storage.GetStorage();
+            // service
+            HostServices = new WCF.HostServices();
+            // property changed
+            _buttonIcon = "Play";
+            _buttonColor = GrayColor;
+            _textColor = RedColor;
+            _text = "сервер не запущен";
+            Log = new ObservableCollection<string>();
+            Tasks = Storage.Tasks;
+
             // test data
             Users = Tests.Datas_Test.GetUsers();
-            Tasks = Tests.Datas_Test.GetTasks();
+            
+            //ShowHostsInfo();
+        }
+        private void InitStartService()
+        {
+            // Config values
+            isRun = true;
+            ButtonIcon = "Stop";
+            ButtonColor = RedColor;
+            TextColor = GrayColor;
+            Text = "сервер запущен";
 
-            //Log = new ObservableCollection<string>();
+            // Subscribe to event
+            WCF.Services.UserChanged += ServiceEvent_UserChanged;
+            WCF.Services.TaskChanged += ServiceEvent_TaskChanged;
 
-            HostServices = new WCF.HostServices();
+            // Start service
+            HostServices.InitHost();
+            HostServices.StartHost();
+            Log.Add("сервис запущен " + DateTime.Now.ToString());
+        }
+        private void InitStopService()
+        {
+            // Config values
+            isRun = false;
+            ButtonIcon = "Play";
+            ButtonColor = GrayColor;
+            TextColor = RedColor;
+            Text = "сервер остановлен";
+
+            // Subscribe to event
+            WCF.Services.UserChanged -= ServiceEvent_UserChanged;
+            WCF.Services.TaskChanged -= ServiceEvent_TaskChanged;
+
+            // Stop service
+            HostServices.StopHost();
+            Log.Add("сервис остановлен " + DateTime.Now.ToString());
+        }
+
+        // test method
+        private void ShowHostsInfo()
+        {
+            foreach(KeyValuePair<string, string> host in Storage.Hosts)
+            {
+                Log.Add(host.Key + "  " + host.Value);
+            }
         }
         #endregion
 
-        #region Events
-        public void service_UserChangedEvent(object sender, WCF.UserChangedEventArgs e)
+        #region ServiceEvent
+        public void ServiceEvent_UserChanged(object sender, WCF.UserChangedEventArgs e)
         {
-            if (Log == null)
-                Log = new ObservableCollection<string>();
-
             Log.Add(e.Message + e.User.Name);
+        }
+        public void ServiceEvent_TaskChanged(object sender, WCF.TaskChangedEventArgs e)
+        {
+            Log.Add(e.Message + e.Task.Title);
         }
         #endregion
     }

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
+using TMServer_WPF.WCF;
 
 namespace TMServer_WPF.CORE
 {
+    #region Data structures class
     // User
     [DataContract(Namespace = "TManager")]
     public class User
@@ -58,10 +60,20 @@ namespace TMServer_WPF.CORE
         [DataMember]
         public string Message { get; set; }
     }
+    #endregion
 
+    #region Events class
+
+    #endregion
+
+    #region Storage
     // Storage
     public class Storage
     {
+        #region Events
+
+        #endregion
+
         private static Storage instance = null;
         public static Storage GetStorage()
         {
@@ -74,8 +86,15 @@ namespace TMServer_WPF.CORE
         private Storage()
         {
             Users = new ObservableCollection<User>();
+            //Tasks = new ObservableCollection<Task>();
+            Tasks = Tests.Datas_Test.GetTasks();
+
+            Hosts = ComputersInLocalNetwork.GetServerList(ComputersInLocalNetwork.SV_101_TYPES.SV_TYPE_ALL);
         }
 
         public ObservableCollection<User> Users;
+        public ObservableCollection<Task> Tasks;
+        public Dictionary<string, string> Hosts;
     }
+    #endregion
 }

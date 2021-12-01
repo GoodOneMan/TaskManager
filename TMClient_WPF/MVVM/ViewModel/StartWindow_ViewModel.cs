@@ -66,6 +66,24 @@ namespace TMClient_WPF.MVVM.ViewModel
                     }));
             }
         }
+        public RelayCommand _changedTask;
+        public RelayCommand ChangedTask_Command
+        {
+            get
+            {
+                return _minWindow ?? (_minWindow = new RelayCommand(
+                    obj =>
+                    {
+                        Task task = (Task)obj;
+
+                        if(task != null)
+                        {
+
+                        }
+
+                    }));
+            }
+        }
         #endregion
     }
 }

@@ -104,6 +104,7 @@ namespace TMClient_WPF.WCF
 
             channel_contract = factory_contract.CreateChannel();
             channel_data_contract = factory_data_contract.CreateChannel();
+
         }
 
         #region IContract_Service
@@ -112,15 +113,14 @@ namespace TMClient_WPF.WCF
             try
             {
                 user = channel_contract.Connect(Environment.UserName, Dns.GetHostName());
-
                 return true;
             }
             catch (Exception e)
             {
-                Thread.Sleep(10000);
-                System.Windows.MessageBox.Show(e.Message);
+                Thread.Sleep(1000);
+                System.Windows.MessageBox.Show(e.Message + Environment.NewLine + " Возможно следует перезагрузить компьютер");
 
-                Connect();
+                //Connect();
 
                 return false;
             }
