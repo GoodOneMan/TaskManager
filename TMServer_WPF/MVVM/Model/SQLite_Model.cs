@@ -13,22 +13,104 @@ namespace TMServer_WPF.MVVM.Model
 {
     class SQLite_Model
     {
+        private string data_path = "";
+        private string data_source = "";
+
+        private string[] users = null;
+        private string[] tasks = null;
+        private string[] comments = null;
+
+        private SQLiteConnection connection = null;
+        private SQLiteCommand command = null;
+
+        private static SQLite_Model instance = null;
+
+        public static SQLite_Model GetDB()
+        {
+            if (instance == null)
+                instance = new SQLite_Model();
+            return instance;
+        }
+
+        private SQLite_Model()
+        {
+            Init();
+        }
+        
+        #region Init
+        private void Init()
+        {
+            data_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+            + Path.DirectorySeparatorChar
+            + "Assets" + Path.DirectorySeparatorChar;
+
+            data_source = data_path + "Storage.db";
+
+            users = new string[] { "USERS", "id", "name", "host", "description", "guid" };
+            tasks = new string[] { "TASKS", "id", "title", "description", "guid", "ischecked", "state", "hint", "user_guid" };
+            comments = new string[] { "COMMENTS", "id", "user_guid", "task_guid", "message" };
+
+            CheckedDB();
+        }
+        private void CheckedDB()
+        {
+            if (!File.Exists(data_source))
+            {
+                if (!Directory.Exists(data_path))
+                    Directory.CreateDirectory(data_path);
+
+                SQLiteConnection.CreateFile(data_source);
+                connection = new SQLiteConnection(String.Format("Data Source={0};", data_source));
+                CreateTables();
+            }
+        }
+        private void CreateTables()
+        {
+            connection.Open();
+            SQLiteTransaction sqliteTransaction = connection.BeginTransaction();
+
+            //USERS
+            string query = "";
+            for (int i = 2; i<users.Length; i++)
+            {
+                query += users[i] + " TEXT,";
+            }
+            query = String.Format("CREATE TABLE IF NOT EXISTS '{0}' (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {1} );", users[0], query.TrimEnd(','));
+            command = new SQLiteCommand(query, connection);
+            command.ExecuteNonQuery();
+
+            //TASKS
+            query = "";
+            for (int i = 2; i < tasks.Length; i++)
+            {
+                query += tasks[i] + " TEXT,";
+            }
+            query = String.Format("CREATE TABLE IF NOT EXISTS '{0}' (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {1} );", tasks[0], query.TrimEnd(','));
+            command = new SQLiteCommand(query, connection);
+            command.ExecuteNonQuery();
+
+            //COMMITS
+            query = "";
+            for (int i = 2; i < comments.Length; i++)
+            {
+                query += comments[i] + " TEXT,";
+            }
+            query = String.Format("CREATE TABLE IF NOT EXISTS '{0}' (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {1} );", comments[0], query.TrimEnd(','));
+            command = new SQLiteCommand(query, connection);
+            command.ExecuteNonQuery();
+
+
+            sqliteTransaction.Commit();
+            connection.Close();
+        }
+        #endregion
+
+        #region CRUD
+
+        #endregion
+
+
         #region One Code
-        //private string data_path = "";
-        //private string data_source = "";
-        //private static SQLite_Model instance = null;
-        //private SQLiteConnection connection = null;
-        //SQLiteCommand command = null;
-
-        //private string[] table_fields = null;
-
-        //public static SQLite_Model GetDB()
-        //{
-        //    if (instance == null)
-        //        instance = new SQLite_Model();
-        //    return instance;
-        //}
-
         //private SQLite_Model()
         //{
         //    InitSQliteModel();
@@ -67,7 +149,7 @@ namespace TMServer_WPF.MVVM.Model
         //}
         //public void ID(ObservableCollection<CORE.Task> tasks)
         //{
-            
+
         //    connection.Open();
         //    SQLiteTransaction sqliteTransaction = connection.BeginTransaction();
         //    foreach (CORE.Task task in tasks)
@@ -82,7 +164,7 @@ namespace TMServer_WPF.MVVM.Model
         //        //ExecuteQuery(query);
         //        command = new SQLiteCommand(query, connection);
         //        command.ExecuteNonQuery();
-                
+
         //    }
         //    sqliteTransaction.Commit();
         //    connection.Close();
@@ -160,5 +242,7 @@ namespace TMServer_WPF.MVVM.Model
          *          id, user_guid, task_guid, message
          * 
          */
+
+
     }
 }

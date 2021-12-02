@@ -164,6 +164,8 @@ namespace TMServer_WPF.MVVM.ViewModel
         public StartWindow_ViewModel()
         {
             InitWindow();
+            //
+            Model.SQLite_Model.GetDB();
         }
 
         private void InitWindow()
