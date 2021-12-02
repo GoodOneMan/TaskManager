@@ -183,11 +183,6 @@ namespace TMServer_WPF.MVVM.ViewModel
             _text = "сервер не запущен";
             Log = new ObservableCollection<string>();
             Tasks = Storage.Tasks;
-
-            // test data
-            Users = Tests.Datas_Test.GetUsers();
-            
-            //ShowHostsInfo();
         }
         private void InitStartService()
         {
@@ -223,15 +218,6 @@ namespace TMServer_WPF.MVVM.ViewModel
             // Stop service
             HostServices.StopHost();
             Log.Add("сервис остановлен " + DateTime.Now.ToString());
-        }
-
-        // test method
-        private void ShowHostsInfo()
-        {
-            foreach(KeyValuePair<string, string> host in Storage.Hosts)
-            {
-                Log.Add(host.Key + "  " + host.Value);
-            }
         }
         #endregion
 

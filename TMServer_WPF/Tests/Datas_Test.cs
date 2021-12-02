@@ -44,7 +44,7 @@ namespace TMServer_WPF.Tests
                 OCtx = null
             };
 
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 10; i++)
             {
                 comments = new ObservableCollection<Comment>();
                 comments.Add(

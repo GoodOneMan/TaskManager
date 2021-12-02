@@ -37,8 +37,6 @@ namespace TMServer_WPF.CORE
         public string Description { get; set; }
         [DataMember]
         public Guid Guid { get; set; }
-        //[DataMember]
-        //public Comment[] Comments { get; set; }
         [DataMember]
         public ObservableCollection<Comment> Comments { get; set; }
         [DataMember]
