@@ -185,6 +185,7 @@ namespace TMServer_WPF.MVVM.ViewModel
             _text = "сервер не запущен";
             Log = new ObservableCollection<string>();
             Tasks = Storage.Tasks;
+            Users = Storage.Users;
         }
         private void InitStartService()
         {
@@ -203,6 +204,9 @@ namespace TMServer_WPF.MVVM.ViewModel
             HostServices.InitHost();
             HostServices.StartHost();
             Log.Add("сервис запущен " + DateTime.Now.ToString());
+
+            // Test
+            // Tests.Datas_Test.FillDB();
         }
         private void InitStopService()
         {

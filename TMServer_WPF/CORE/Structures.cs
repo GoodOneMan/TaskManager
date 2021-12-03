@@ -57,6 +57,8 @@ namespace TMServer_WPF.CORE
         public User User { get; set; }
         [DataMember]
         public string Message { get; set; }
+        [DataMember]
+        public Guid TaskGuid { get; set; }
     }
     #endregion
 
@@ -83,8 +85,10 @@ namespace TMServer_WPF.CORE
 
         private Storage()
         {
-            Users = new ObservableCollection<User>();
+            //Users = new ObservableCollection<User>();
             //Tasks = new ObservableCollection<Task>();
+
+            Users = Tests.Datas_Test.GetUsers();
             Tasks = Tests.Datas_Test.GetTasks();
 
             Hosts = ComputersInLocalNetwork.GetServerList(ComputersInLocalNetwork.SV_101_TYPES.SV_TYPE_ALL);
