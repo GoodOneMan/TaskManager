@@ -88,7 +88,7 @@ namespace TMServer_WPF.Tests
             ObservableCollection<Task> tasks = new ObservableCollection<Task>();
             
             // User
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 30; i++)
             {
                 users.Add(
                     new User()
@@ -104,7 +104,7 @@ namespace TMServer_WPF.Tests
             for(int i = 0; i < 100; i++)
             {
                 Thread.Sleep(1);
-                int user_index = new Random().Next(0, 9);
+                int user_index = new Random().Next(0, 29);
                 tasks.Add(
                     new Task()
                     {
@@ -120,10 +120,10 @@ namespace TMServer_WPF.Tests
                     );
             }
             // Comment
-            for(int i = 0; i < 1000; i++)
+            for(int i = 0; i < 100; i++)
             {
                 Thread.Sleep(1);
-                int user_index = new Random().Next(0, 9);
+                int user_index = new Random().Next(0, 29);
                 Thread.Sleep(1);
                 int task_index = new Random().Next(0, 99);
                 comments.Add(
@@ -131,10 +131,13 @@ namespace TMServer_WPF.Tests
                     {
                         Message = "",
                         User = users[user_index],
-                        TaskGuid = tasks[task_index].Guid
+                        TaskGuid = tasks[task_index].Guid,
+                        Guid = Guid.NewGuid()
+                        
                     }
                     );
             }
+            
             // Comments to task
             foreach(Task task in tasks)
             {
@@ -148,7 +151,7 @@ namespace TMServer_WPF.Tests
                 {
                     Thread.Sleep(1);
                     rnd = new Random();
-                    int index_comment = rnd.Next(0, 999);
+                    int index_comment = rnd.Next(0, 99);
 
                     if (!indexs.Contains(index_comment))
                     {
@@ -161,20 +164,27 @@ namespace TMServer_WPF.Tests
             // Write to DB
             MVVM.Model.SQLite_Model sQLite_Model = MVVM.Model.SQLite_Model.GetDB();
 
-            foreach(User user in users)
-            {
-                sQLite_Model.InsertUser(user);
-            }
-            
-            foreach(Task task in tasks)
-            {
-                sQLite_Model.InsertTask(task);
-            }
+            //foreach(User user in users)
+            //{
+            //    sQLite_Model.InsertUser(user);
+            //}
 
-            foreach (Comment comment in comments)
-            {
-                sQLite_Model.InsertComment(comment);
-            }
+            //foreach(Task task in tasks)
+            //{
+            //    sQLite_Model.InsertTask(task);
+            //}
+
+            //foreach (Comment comment in comments)
+            //{
+            //    sQLite_Model.InsertComment(comment);
+            //}
+
+            sQLite_Model.InsertAllUsers(users);
+            sQLite_Model.InsertAllTasks(tasks);
+            sQLite_Model.InsertAllComments(comments);
+
+            Storage.GetStorage().Tasks = tasks;
+            Storage.GetStorage().Users = users;
         }
     }
 }

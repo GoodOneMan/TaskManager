@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
 using TMServer_WPF.WCF;
+using TMServer_WPF.MVVM.Model;
 
 namespace TMServer_WPF.CORE
 {
@@ -59,6 +60,8 @@ namespace TMServer_WPF.CORE
         public string Message { get; set; }
         [DataMember]
         public Guid TaskGuid { get; set; }
+        [DataMember]
+        public Guid Guid { get; set; }
     }
     #endregion
 
@@ -67,9 +70,26 @@ namespace TMServer_WPF.CORE
     #endregion
 
     #region Storage
-    // Storage
-    public class Storage
+    class Storage : IObservable
     {
+        #region IObservable
+        public void AddObserver(IObserver o)
+        {
+            observers.Add(o);
+        }
+
+        public void RemoveObserver(IObserver o)
+        {
+            observers.Remove(o);
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (IObserver observer in observers)
+                observer.UpdateProperty();
+        }
+        #endregion
+
         #region Events
 
         #endregion
@@ -82,21 +102,42 @@ namespace TMServer_WPF.CORE
 
             return instance;
         }
+        private SQLite_Model db = null;
 
         private Storage()
         {
-            //Users = new ObservableCollection<User>();
-            //Tasks = new ObservableCollection<Task>();
-
+            observers = new List<IObserver>();
+            db = SQLite_Model.GetDB();
             Users = Tests.Datas_Test.GetUsers();
             Tasks = Tests.Datas_Test.GetTasks();
 
             Hosts = ComputersInLocalNetwork.GetServerList(ComputersInLocalNetwork.SV_101_TYPES.SV_TYPE_ALL);
         }
 
-        public ObservableCollection<User> Users;
-        public ObservableCollection<Task> Tasks;
+        private List<IObserver> observers;
         public Dictionary<string, string> Hosts;
+
+        private ObservableCollection<User> _users;
+        public ObservableCollection<User> Users
+        {
+            get { return _users; }
+            set
+            {
+                _users = value;
+                NotifyObservers();
+            }
+        }
+
+        private ObservableCollection<Task> _tasks;
+        public ObservableCollection<Task> Tasks
+        {
+            get { return _tasks; }
+            set
+            {
+                _tasks = value;
+                NotifyObservers();
+            }
+        }
     }
     #endregion
 }

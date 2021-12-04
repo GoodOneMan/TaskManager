@@ -98,7 +98,7 @@
     <Compile Include="CORE\BaseViewModel.cs" />
     <Compile Include="CORE\RelayCommand.cs" />
     <Compile Include="CORE\Structures.cs" />
-    <Compile Include="MVVM\Model\Repository.cs" />
+    <Compile Include="MVVM\Model\ObservableImplement.cs" />
     <Compile Include="MVVM\ViewModel\StartWindow_ViewModel.cs" />
     <Compile Include="MVVM\View\StartWindow_View.xaml.cs">
       <DependentUpon>StartWindow_View.xaml</DependentUpon>

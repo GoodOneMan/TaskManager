@@ -5,10 +5,11 @@ using System.Text;
 using System.Collections.ObjectModel;
 using TMServer_WPF.CORE;
 using TMServer_WPF.MVVM.View;
+using TMServer_WPF.MVVM.Model;
 
 namespace TMServer_WPF.MVVM.ViewModel
 {
-    class StartWindow_ViewModel : BaseViewModel
+    class StartWindow_ViewModel : BaseViewModel, IObserver
     {
         private bool isRun;
         private static string GrayColor;
@@ -82,7 +83,7 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("Tasks");
             }
         }
-
+       
         private ObservableCollection<string> _log;
         public ObservableCollection<string> Log
         {
@@ -164,8 +165,7 @@ namespace TMServer_WPF.MVVM.ViewModel
         public StartWindow_ViewModel()
         {
             InitWindow();
-            //
-            Model.SQLite_Model.GetDB();
+            Storage.AddObserver(this);
         }
 
         private void InitWindow()
@@ -183,9 +183,8 @@ namespace TMServer_WPF.MVVM.ViewModel
             _buttonColor = GrayColor;
             _textColor = RedColor;
             _text = "сервер не запущен";
+
             Log = new ObservableCollection<string>();
-            Tasks = Storage.Tasks;
-            Users = Storage.Users;
         }
         private void InitStartService()
         {
@@ -206,7 +205,7 @@ namespace TMServer_WPF.MVVM.ViewModel
             Log.Add("сервис запущен " + DateTime.Now.ToString());
 
             // Test
-            // Tests.Datas_Test.FillDB();
+            Tests.Datas_Test.FillDB();
         }
         private void InitStopService()
         {
@@ -236,6 +235,15 @@ namespace TMServer_WPF.MVVM.ViewModel
         {
             Log.Add(e.Message + e.Task.Title);
         }
+
+        // IObserver Storage
+        public void UpdateProperty()
+        {
+            Tasks = Storage.Tasks;
+            Users = Storage.Users;
+        }
         #endregion
+
+
     }
 }
