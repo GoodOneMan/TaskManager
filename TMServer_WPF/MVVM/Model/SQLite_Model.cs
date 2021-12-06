@@ -191,7 +191,7 @@ namespace TMServer_WPF.MVVM.Model
                 connection.Open();
                 transaction = connection.BeginTransaction();
             }
-            string query = String.Format("SELECT * FROM 'COMMENTS' WHERE 'task_guid' = '" + taskGuid + "'");
+            string query = String.Format("SELECT * FROM 'COMMENTS' WHERE task_guid = '{0}'", taskGuid);
             command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -255,7 +255,7 @@ namespace TMServer_WPF.MVVM.Model
                 connection.Open();
                 transaction = connection.BeginTransaction();
             }
-            string query = String.Format("SELECT * FROM 'USERS' WHERE 'guid' = '" + guid + "'");
+            string query = String.Format("SELECT * FROM 'USERS' WHERE guid = '{0}'", guid);
             command = new SQLiteCommand(query, connection);
             command.ExecuteNonQuery();
             SQLiteDataReader reader = command.ExecuteReader();

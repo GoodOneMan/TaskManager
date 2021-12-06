@@ -87,6 +87,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MVVM\Model\SQLite_Model.cs" />
+    <Compile Include="MVVM\ViewModel\CommentWindow_ViewModel.cs" />
+    <Compile Include="MVVM\View\CommentWindow_View.xaml.cs">
+      <DependentUpon>CommentWindow_View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tests\Datas_Test.cs" />
     <Compile Include="WCF\ComputersInLocalNetwork.cs" />
     <Compile Include="WCF\HostServices.cs" />
@@ -130,6 +134,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MVVM\View\CommentWindow_View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\StartWindow_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

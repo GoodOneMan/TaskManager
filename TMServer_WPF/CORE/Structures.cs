@@ -70,7 +70,7 @@ namespace TMServer_WPF.CORE
     #endregion
 
     #region Storage
-    class Storage : IObservable
+    class Storage : BaseViewModel, IObservable
     {
         #region IObservable
         public void AddObserver(IObserver o)
@@ -83,10 +83,10 @@ namespace TMServer_WPF.CORE
             observers.Remove(o);
         }
 
-        public void NotifyObservers()
+        public void NotifyObservers(Type type)
         {
             foreach (IObserver observer in observers)
-                observer.UpdateProperty();
+                observer.UpdateProperty(type);
         }
         #endregion
 
@@ -107,11 +107,16 @@ namespace TMServer_WPF.CORE
         private Storage()
         {
             observers = new List<IObserver>();
+        }
+
+        public void Init()
+        {
             db = SQLite_Model.GetDB();
-            Users = Tests.Datas_Test.GetUsers();
-            Tasks = Tests.Datas_Test.GetTasks();
 
             Hosts = ComputersInLocalNetwork.GetServerList(ComputersInLocalNetwork.SV_101_TYPES.SV_TYPE_ALL);
+
+            Users = db.GetAllUsers();
+            Tasks = db.GetAllTasks();
         }
 
         private List<IObserver> observers;
@@ -124,7 +129,7 @@ namespace TMServer_WPF.CORE
             set
             {
                 _users = value;
-                NotifyObservers();
+                NotifyObservers(typeof(User));
             }
         }
 
@@ -135,7 +140,18 @@ namespace TMServer_WPF.CORE
             set
             {
                 _tasks = value;
-                NotifyObservers();
+                NotifyObservers(typeof(Task));
+            }
+        }
+
+        private Task _selectTask;
+        public Task SelectTask
+        {
+            get { return _selectTask; }
+            set
+            {
+                _selectTask = value;
+                NotifyObservers(typeof(Task));
             }
         }
     }

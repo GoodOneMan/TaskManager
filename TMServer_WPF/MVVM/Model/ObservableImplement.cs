@@ -10,11 +10,11 @@ namespace TMServer_WPF.MVVM.Model
     {
         void AddObserver(IObserver o);
         void RemoveObserver(IObserver o);
-        void NotifyObservers();
+        void NotifyObservers(Type type);
     }
 
     interface IObserver
     {
-        void UpdateProperty();
+        void UpdateProperty(Type type);
     }
 }

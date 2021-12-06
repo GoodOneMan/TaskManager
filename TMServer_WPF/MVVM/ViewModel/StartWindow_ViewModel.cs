@@ -15,7 +15,7 @@ namespace TMServer_WPF.MVVM.ViewModel
         private static string GrayColor;
         private static string RedColor;
         private WCF.HostServices HostServices;
-        private Storage Storage;
+        public Storage Storage;
 
         #region Property
         private string _buttonIcon;
@@ -73,16 +73,16 @@ namespace TMServer_WPF.MVVM.ViewModel
             }
         }
 
-        private ObservableCollection<Task> _tasks;
-        public ObservableCollection<Task> Tasks
-        {
-            get { return _tasks; }
-            set
-            {
-                _tasks = value;
-                OnPropertyChanged("Tasks");
-            }
-        }
+        //private ObservableCollection<Task> _tasks;
+        //public ObservableCollection<Task> Tasks
+        //{
+        //    get { return _tasks; }
+        //    set
+        //    {
+        //        _tasks = value;
+        //        OnPropertyChanged("Tasks");
+        //    }
+        //}
        
         private ObservableCollection<string> _log;
         public ObservableCollection<string> Log
@@ -94,11 +94,10 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("Log");
             }
         }
-
         #endregion
 
         #region Command
-        public RelayCommand _closeWindow;
+        private RelayCommand _closeWindow;
         public RelayCommand CloseWindow_Command
         {
             get
@@ -111,7 +110,7 @@ namespace TMServer_WPF.MVVM.ViewModel
                     }));
             }
         }
-        public RelayCommand _minWindow;
+        private RelayCommand _minWindow;
         public RelayCommand MinWindow_Command
         {
             get
@@ -124,7 +123,7 @@ namespace TMServer_WPF.MVVM.ViewModel
                     }));
             }
         }
-        public RelayCommand _maxWindow;
+        private RelayCommand _maxWindow;
         public RelayCommand MaxWindow_Command
         {
             get
@@ -140,7 +139,7 @@ namespace TMServer_WPF.MVVM.ViewModel
                     }));
             }
         }
-        public RelayCommand _startOrStopService;
+        private RelayCommand _startOrStopService;
         public RelayCommand StartStopService_Command
         {
             get
@@ -159,13 +158,40 @@ namespace TMServer_WPF.MVVM.ViewModel
                     }));
             }
         }
+        private RelayCommand _isChecked;
+        public RelayCommand IsChecked_Command
+        {
+            get
+            {
+                return _isChecked ?? (_isChecked = new RelayCommand(
+                    obj =>
+                    {
+                        Task task = (Task)obj;
+                        
+
+                    }));
+            }
+        }
+        private RelayCommand _setComment;
+        public RelayCommand SetComment_Command
+        {
+            get
+            {
+                return _setComment ?? (_setComment = new RelayCommand(
+                    obj =>
+                    {
+                        Task task = (Task)obj;
+                        Storage.SelectTask = task;
+                        new CommentWindow_View().Show();
+                    }));
+            }
+        }
         #endregion
 
         #region Internal method
         public StartWindow_ViewModel()
         {
             InitWindow();
-            Storage.AddObserver(this);
         }
 
         private void InitWindow()
@@ -185,6 +211,10 @@ namespace TMServer_WPF.MVVM.ViewModel
             _text = "сервер не запущен";
 
             Log = new ObservableCollection<string>();
+
+            // Storage
+            Storage.AddObserver(this);
+            Storage.Init();
         }
         private void InitStartService()
         {
@@ -204,8 +234,6 @@ namespace TMServer_WPF.MVVM.ViewModel
             HostServices.StartHost();
             Log.Add("сервис запущен " + DateTime.Now.ToString());
 
-            // Test
-            Tests.Datas_Test.FillDB();
         }
         private void InitStopService()
         {
@@ -237,13 +265,13 @@ namespace TMServer_WPF.MVVM.ViewModel
         }
 
         // IObserver Storage
-        public void UpdateProperty()
+        public void UpdateProperty(Type type)
         {
-            Tasks = Storage.Tasks;
-            Users = Storage.Users;
+            //if (type == typeof(Task))
+            //    Tasks = Storage.Tasks;
+            if (type == typeof(User))
+                Users = Storage.Users;
         }
         #endregion
-
-
     }
 }

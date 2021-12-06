@@ -120,7 +120,7 @@ namespace TMServer_WPF.Tests
                     );
             }
             // Comment
-            for(int i = 0; i < 100; i++)
+            for(int i = 0; i < 1000; i++)
             {
                 Thread.Sleep(1);
                 int user_index = new Random().Next(0, 29);
@@ -143,7 +143,7 @@ namespace TMServer_WPF.Tests
             {
                 Thread.Sleep(1);
                 rnd = new Random();
-                int count = rnd.Next(0, 99);
+                int count = rnd.Next(0, 999);
 
                 List<int> indexs = new List<int>();
 
@@ -151,7 +151,7 @@ namespace TMServer_WPF.Tests
                 {
                     Thread.Sleep(1);
                     rnd = new Random();
-                    int index_comment = rnd.Next(0, 99);
+                    int index_comment = rnd.Next(0, 999);
 
                     if (!indexs.Contains(index_comment))
                     {
