@@ -36,7 +36,7 @@ namespace TMServer_WPF.WCF
     #endregion
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    class Services : IContract_Service, IDataContract_Service
+    class Services : IContract_Service, IDataContract_Service, IObserver
     {
         #region Events
         // User
@@ -56,7 +56,9 @@ namespace TMServer_WPF.WCF
 
         #region Internal method
         Storage Storage = Storage.GetStorage();
-        public Services(){}
+        public Services(){
+            Storage.AddObserver(this);
+        }
         #endregion
 
         #region IContract_Service
@@ -162,6 +164,13 @@ namespace TMServer_WPF.WCF
             {
                 user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback(msg, task);
             }
+        }
+        #endregion
+
+        #region IObserver
+        public void UpdateProperty(Type type)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -49,12 +49,12 @@
                         <materialDesign:PackIcon Kind="Close" Width="12" />
                     </Button>
                 </StackPanel>
-                <!-- Task list -->
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
+                <!-- Task Data -->
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type core:Task}" >
                             <Border x:Name="Border" Padding="8">
-                                <Grid>
+                                <Grid ToolTip="{Binding Hint}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition SharedSizeGroup="Checkerz" />
                                         <ColumnDefinition />
@@ -63,15 +63,20 @@
 
                                     <CheckBox Grid.Column="0"
                                               IsChecked="{Binding IsChecked, Mode=TwoWay, NotifyOnTargetUpdated=True}" 
-                                              Command="{Binding Path=DataContext.IsCheckedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                              Command="{Binding Path=DataContext.IsChecked_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               CommandParameter="{Binding}"/>
 
                                     <StackPanel  Margin="8 0 0 0" Grid.Column="1">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Title}" Margin="8 0 0 0"/>
-                                            <TextBlock Text="{Binding User.Name}" Margin="8 0 0 0"/>
-                                        </StackPanel>
-                                        <TextBlock Grid.Column="0" Text="{Binding Description}" />
+                                        <TextBlock Padding="6" TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{} {0} {1} {2} {3}">
+                                                    <Binding Path="Title"></Binding>
+                                                    <Binding Path="User.Name"></Binding>
+                                                    <Binding Source="{x:Static System:Environment.NewLine}"/>
+                                                    <Binding Path="Description"></Binding>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                     </StackPanel>
 
                                     <materialDesign:PopupBox Grid.Column="2"
@@ -85,23 +90,17 @@
                                                                      Closed="PopupBox_OnClosed">
                                         <StackPanel Orientation="Horizontal">
                                             <Button ToolTip="комментировать задачу"
-                                                    Command="{Binding Path=DataContext.SetCommentInTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    Command="{Binding Path=DataContext.SetComment_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="CommentTextOutline" />
                                             </Button>
                                             <Button ToolTip="завершить задачу"
-                                                    Command="{Binding Path=DataContext.CompletingTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    Command="{Binding Path=DataContext.CloseTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="Power" />
                                             </Button>
-                                            <Button ToolTip="завершить задачу"
-                                                    Command="{Binding Path=DataContext.ChangedTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}">
-                                                <materialDesign:PackIcon Kind="TestTube" />
-                                            </Button>
                                         </StackPanel>
                                     </materialDesign:PopupBox>
-
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>
@@ -126,9 +125,7 @@
                             </ScrollViewer>
                         </ControlTemplate>
                     </ItemsControl.Template>
-
                 </ItemsControl>
-
             </Grid>
         </Border>
     </Border>

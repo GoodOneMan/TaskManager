@@ -67,6 +67,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MVVM\Model\Storage.cs" />
+    <Compile Include="MVVM\ViewModel\CommentWindow_ViewModel.cs" />
+    <Compile Include="MVVM\View\CommentWindow_View.xaml.cs">
+      <DependentUpon>CommentWindow_View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WCF\HostClient.cs" />
     <Compile Include="WCF\IContract_Service.cs" />
     <Compile Include="WCF\IDataContract_Service.cs" />
@@ -104,10 +109,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="MVVM\Model\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Page Include="MVVM\View\CommentWindow_View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\StartWindow_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

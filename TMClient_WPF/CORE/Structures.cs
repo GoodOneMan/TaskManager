@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace TMClient_WPF.CORE
 {
+    #region Data structures class
     // User
     [DataContract(Namespace = "TManager")]
     public class User
@@ -35,8 +36,6 @@ namespace TMClient_WPF.CORE
         public string Description { get; set; }
         [DataMember]
         public Guid Guid { get; set; }
-        //[DataMember]
-        //public Comment[] Comments { get; set; }
         [DataMember]
         public ObservableCollection<Comment> Comments { get; set; }
         [DataMember]
@@ -57,6 +56,11 @@ namespace TMClient_WPF.CORE
         public User User { get; set; }
         [DataMember]
         public string Message { get; set; }
+        [DataMember]
+        public Guid TaskGuid { get; set; }
+        [DataMember]
+        public Guid Guid { get; set; }
     }
+    #endregion
 
 }

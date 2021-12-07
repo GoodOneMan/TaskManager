@@ -130,6 +130,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="UML\UMLService.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
