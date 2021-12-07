@@ -61,7 +61,7 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("Text");
             }
         }
-
+        
         private ObservableCollection<User> _users;
         public ObservableCollection<User> Users
         {
@@ -72,18 +72,18 @@ namespace TMServer_WPF.MVVM.ViewModel
                 OnPropertyChanged("Users");
             }
         }
+        
+        private ObservableCollection<Task> _tasks;
+        public ObservableCollection<Task> Tasks
+        {
+            get { return _tasks; }
+            set
+            {
+                _tasks = value;
+                OnPropertyChanged("Tasks");
+            }
+        }
 
-        //private ObservableCollection<Task> _tasks;
-        //public ObservableCollection<Task> Tasks
-        //{
-        //    get { return _tasks; }
-        //    set
-        //    {
-        //        _tasks = value;
-        //        OnPropertyChanged("Tasks");
-        //    }
-        //}
-       
         private ObservableCollection<string> _log;
         public ObservableCollection<string> Log
         {
@@ -166,9 +166,24 @@ namespace TMServer_WPF.MVVM.ViewModel
                 return _isChecked ?? (_isChecked = new RelayCommand(
                     obj =>
                     {
-                        Task task = (Task)obj;
-                        
+                        if(obj != null)
+                        {
+                            Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
 
+                            ObservableCollection<Task> temp = new ObservableCollection<Task>();
+                            foreach (Task t in Storage.Tasks)
+                            {
+                                if (t.IsChecked)
+                                    temp.Add(t);
+                            }
+                            foreach (Task t in Storage.Tasks)
+                            {
+                                if (!t.IsChecked)
+                                    temp.Add(t);
+                            }
+                            Storage.Tasks.Clear();
+                            Storage.Tasks = temp;
+                        }
                     }));
             }
         }
@@ -201,7 +216,7 @@ namespace TMServer_WPF.MVVM.ViewModel
             GrayColor = "#40626C";
             RedColor = "#AE6E64";
             HostServices = null;
-            Storage = Storage.GetStorage();
+            
             // service
             HostServices = new WCF.HostServices();
             // property changed
@@ -213,6 +228,7 @@ namespace TMServer_WPF.MVVM.ViewModel
             Log = new ObservableCollection<string>();
 
             // Storage
+            Storage = Storage.GetStorage();
             Storage.AddObserver(this);
             Storage.Init();
         }
@@ -267,10 +283,13 @@ namespace TMServer_WPF.MVVM.ViewModel
         // IObserver Storage
         public void UpdateProperty(Type type)
         {
-            //if (type == typeof(Task))
-            //    Tasks = Storage.Tasks;
-            if (type == typeof(User))
-                Users = Storage.Users;
+            Tasks = new ObservableCollection<Task>();
+            Tasks = Storage.Tasks;
+            OnPropertyChanged("Tasks");
+            
+            Users = new ObservableCollection<User>();
+            Users = Storage.Users;
+            OnPropertyChanged("Users");
         }
         #endregion
     }

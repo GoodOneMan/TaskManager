@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using TMServer_WPF.CORE;
 using System.Threading;
+using TMServer_WPF.MVVM.Model;
 
 namespace TMServer_WPF.Tests
 {
