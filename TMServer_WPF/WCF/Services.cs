@@ -5,6 +5,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using TMServer_WPF.CORE;
+using TMServer_WPF.MVVM.Model;
 
 namespace TMServer_WPF.WCF
 {

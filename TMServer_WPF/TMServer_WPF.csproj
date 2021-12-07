@@ -87,6 +87,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MVVM\Model\SQLite_Model.cs" />
+    <Compile Include="MVVM\Model\Storage.cs" />
     <Compile Include="MVVM\ViewModel\CommentWindow_ViewModel.cs" />
     <Compile Include="MVVM\View\CommentWindow_View.xaml.cs">
       <DependentUpon>CommentWindow_View.xaml</DependentUpon>
