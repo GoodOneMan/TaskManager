@@ -141,8 +141,9 @@ namespace TMServer_WPF.WCF
             if (t == null)
                 return false;
 
-            t = task;
-
+            Storage.Tasks.Remove(t);
+            Storage.Tasks.Add(task);
+            
             // Call event
             OnTaskChanged(new TaskChangedEventArgs("задача обновлена ", task));
 
@@ -162,7 +163,7 @@ namespace TMServer_WPF.WCF
         {
             foreach(User user in Storage.Users)
             {
-                user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback(msg, task);
+                //user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback(msg, task);
             }
         }
         #endregion
@@ -170,7 +171,7 @@ namespace TMServer_WPF.WCF
         #region IObserver
         public void UpdateProperty(Type type)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
     }

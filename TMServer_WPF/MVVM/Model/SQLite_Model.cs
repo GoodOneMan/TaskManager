@@ -124,7 +124,8 @@ namespace TMServer_WPF.MVVM.Model
                 task.Guid = new Guid(reader.GetValue(3).ToString());
                 task.IsChecked = Convert.ToBoolean(reader.GetValue(4).ToString());
                 task.State = Convert.ToBoolean(reader.GetValue(5).ToString());
-                task.Hint = reader.GetValue(6).ToString();
+                //task.Hint = reader.GetValue(6).ToString();
+                task.Hint = GetHint(task);
                 task.User = GetUser(new Guid(reader.GetValue(7).ToString()), false);
                 task.Comments = GetComments(task.Guid, false);
 
@@ -135,6 +136,15 @@ namespace TMServer_WPF.MVVM.Model
             connection.Close();
             return tasks;
         } //Complete
+        private string GetHint(Task task)
+        {
+            string str = task.Title + Environment.NewLine;
+            foreach(Comment comment in GetComments(task.Guid, false))
+            {
+                str += comment.User.Name + Environment.NewLine + comment.Message + Environment.NewLine;
+            }
+            return str;
+        }
         public ObservableCollection<User> GetAllUsers()
         {
             ObservableCollection<User> users = new ObservableCollection<User>();

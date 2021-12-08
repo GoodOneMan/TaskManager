@@ -5,12 +5,14 @@ using System.Text;
 using TMClient_WPF.CORE;
 using TMClient_WPF.MVVM.Model;
 using TMClient_WPF.MVVM.View;
+using TMClient_WPF.WCF;
 
 namespace TMClient_WPF.MVVM.ViewModel
 {
     class CommentWindow_ViewModel : BaseViewModel, IObserver
     {
         Storage Storage = null;
+        HostClient HostClient = null;
 
         #region Property
         private Task _task;
@@ -59,6 +61,9 @@ namespace TMClient_WPF.MVVM.ViewModel
                       Task.Description = Message;
 
                       Storage.NotifyObservers(typeof(Task));
+
+                      HostClient.SendTask(Task);
+
                       Storage.RemoveObserver(this);
                       window.Close();
                   }));
@@ -70,6 +75,7 @@ namespace TMClient_WPF.MVVM.ViewModel
         {
             Storage = Storage.GetStorage();
             Storage.AddObserver(this);
+            HostClient = HostClient.GetClient();
             Task = Storage.SelectTask;
         }
 

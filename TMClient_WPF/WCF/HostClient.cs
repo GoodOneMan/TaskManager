@@ -43,10 +43,10 @@ namespace TMClient_WPF.WCF
         private void InitClient()
         {
             #region Address
-            //address_contract = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
-            //address_data_contract = new Uri("net.tcp://192.168.0.162:4005/IDataContract_Service");
-            address_contract = new Uri("net.tcp://localhost:4004/IContract_Service");
-            address_data_contract = new Uri("net.tcp://localhost:4005/IDataContract_Service");
+            address_contract = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
+            address_data_contract = new Uri("net.tcp://192.168.0.162:4005/IDataContract_Service");
+            //address_contract = new Uri("net.tcp://localhost:4004/IContract_Service");
+            //address_data_contract = new Uri("net.tcp://localhost:4005/IDataContract_Service");
             #endregion
 
             #region Binding
@@ -150,6 +150,10 @@ namespace TMClient_WPF.WCF
         public ObservableCollection<Task> GetTasks()
         {
             return channel_data_contract.GetTasks();
+        }
+        public void SendTask(Task task)
+        {
+            channel_data_contract.SetTask(task);
         }
         #endregion
 
