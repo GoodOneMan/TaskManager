@@ -43,6 +43,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\lib\net451\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
@@ -69,15 +72,23 @@
     </Compile>
     <Compile Include="MVVM\Model\DataBase.cs" />
     <Compile Include="MVVM\Model\Storage.cs" />
+    <Compile Include="MVVM\ViewModel\CommentViewModel.cs" />
     <Compile Include="MVVM\ViewModel\StartViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\TaskViewModel.cs" />
     <Compile Include="MVVM\View\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\StartView.xaml.cs">
       <DependentUpon>StartView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\View\TaskView.xaml.cs">
+      <DependentUpon>TaskView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TEST\Datas.cs" />
+    <Compile Include="WCF\HostServices.cs" />
     <Compile Include="WCF\IContract_Service.cs" />
     <Compile Include="WCF\IDataContract_Service.cs" />
+    <Compile Include="WCF\Services.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CORE\BaseViewModel.cs" />
@@ -122,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\View\StartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\View\TaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

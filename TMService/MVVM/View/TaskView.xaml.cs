@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace TMService.MVVM.View
 {
     /// <summary>
-    /// Логика взаимодействия для CommentView.xaml
+    /// Логика взаимодействия для TaskView.xaml
     /// </summary>
-    public partial class CommentView : Window
+    public partial class TaskView : Window
     {
-        public CommentView()
+        public TaskView()
         {
             InitializeComponent();
         }

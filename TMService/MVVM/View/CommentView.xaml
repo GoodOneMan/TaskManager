@@ -3,10 +3,94 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TMService.MVVM.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:struct="clr-namespace:TMStructure;assembly=TMStructure"
+        xmlns:vm="clr-namespace:TMService.MVVM.ViewModel"
+        xmlns:m="clr-namespace:TMService.MVVM.Model"
+        xmlns:core="clr-namespace:TMService.CORE"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="CommentView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Прокомментировать" Height="450" Width="238.789"
+        Background="Transparent" WindowStyle="None" AllowsTransparency="True"
+        WindowStartupLocation="CenterOwner"
+        x:Name="CWindow"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    
+    <Window.DataContext>
+        <vm:CommentViewModel />
+    </Window.DataContext>
+
+    <Border Background="#FFBDD9E4" CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="56"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" 
+                          ItemsSource="{Binding Task.Comments}" 
+                          Grid.IsSharedSizeScope="True" 
+                          Margin="5 0 5 0" 
+                          ScrollViewer.IsDeferredScrollingEnabled="True">
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type struct:Comment}">
+                        <Border x:Name="Border">
+                            <materialDesign:Card
+                                  Background="{DynamicResource PrimaryHueDarkBrush}"
+                                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                <TextBlock Padding="6" TextWrapping="Wrap">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{} User: {0} {1} {2}">
+                                            <Binding Path="User.Guid"></Binding>
+                                            <Binding Source="{x:Static System:Environment.NewLine}"/>
+                                            <Binding Path="Message"></Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </materialDesign:Card>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.Template>
+                    <ControlTemplate TargetType="ItemsControl">
+                        <ScrollViewer CanContentScroll="False" Padding="{TemplateBinding Padding}" Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
+            </ItemsControl>
+
+
+            <TextBox Grid.Row="2" Grid.ColumnSpan="2"
+                VerticalAlignment="Top"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                Margin="10,10,10,0"
+                Text="{Binding Message}"
+                materialDesign:HintAssist.Hint="сообщение"/>
+
+            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Margin="0" Width="122" Height="32" Padding="3" Command="{Binding SetComment_Command}" CommandParameter="{Binding ElementName=CWindow}">
+                    <materialDesign:PackIcon Kind="Check" />
+                </Button>
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </Window>

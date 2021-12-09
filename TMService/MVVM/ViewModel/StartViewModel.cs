@@ -6,6 +6,7 @@ using System.Text;
 using TMService.CORE;
 using TMService.MVVM.Model;
 using TMService.MVVM.View;
+using TMService.WCF;
 using TMStructure;
 
 namespace TMService.MVVM.ViewModel
@@ -15,7 +16,8 @@ namespace TMService.MVVM.ViewModel
         private bool isRun;
         private static string GrayColor;
         private static string RedColor;
-        public Storage Storage;
+        private Storage Storage;
+        private HostServices HostServices;
 
         #region Property
         private string _buttonIcon;
@@ -144,7 +146,14 @@ namespace TMService.MVVM.ViewModel
                 return _startOrStopService ?? (_startOrStopService = new RelayCommand(
                     obj =>
                     {
-                        
+                        if (isRun)
+                        {
+                            InitStopService();
+                        }
+                        else
+                        {
+                            InitStartService();
+                        }
                     }));
             }
         }
@@ -156,7 +165,21 @@ namespace TMService.MVVM.ViewModel
                 return _isChecked ?? (_isChecked = new RelayCommand(
                     obj =>
                     {
-                        
+                        Task task = (Task)obj;
+                        int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(item => item.Guid == task.Guid));
+                        Storage.Tasks[index] = task;
+                    }));
+            }
+        }
+        private RelayCommand _addask;
+        public RelayCommand AddTask_Command
+        {
+            get
+            {
+                return _addask ?? (_addask = new RelayCommand(
+                    obj =>
+                    {
+                        new TaskView().Show();
                     }));
             }
         }
@@ -168,7 +191,8 @@ namespace TMService.MVVM.ViewModel
                 return _setComment ?? (_setComment = new RelayCommand(
                     obj =>
                     {
-                       
+                        Storage.Task = (Task)obj;
+                        new CommentView().Show();
                     }));
             }
         }
@@ -190,6 +214,13 @@ namespace TMService.MVVM.ViewModel
             // Storage
             Storage = Storage.GetStorage();
             Storage.AddObserver(this);
+            Storage.GetAllData();
+
+            // Services
+            HostServices = new HostServices();
+
+            // Test
+            //TEST.Datas.FillDB();
         }
 
         private void InitStartService()
@@ -199,6 +230,10 @@ namespace TMService.MVVM.ViewModel
             ButtonColor = RedColor;
             TextColor = GrayColor;
             Text = "сервер запущен";
+
+            //service
+            HostServices.InitHost();
+            HostServices.StartHost();
         }
 
         private void InitStopService()
@@ -208,6 +243,9 @@ namespace TMService.MVVM.ViewModel
             ButtonColor = GrayColor;
             TextColor = RedColor;
             Text = "сервер остановлен";
+
+            //service
+            HostServices.StopHost();
         }
 
         // Updata Storage Property
@@ -219,7 +257,12 @@ namespace TMService.MVVM.ViewModel
                 Tasks = Storage.Tasks;
                 OnPropertyChanged("Tasks");
             }
-
+            if (type == typeof(Task))
+            {
+                Tasks = new ObservableCollection<Task>();
+                Tasks = Storage.Tasks;
+                OnPropertyChanged("Tasks");
+            }
             if (type == typeof(ObservableCollection<User>))
             {
                 Users = new ObservableCollection<User>();

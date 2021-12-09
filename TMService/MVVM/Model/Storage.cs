@@ -77,6 +77,7 @@ namespace TMService.MVVM.Model
         #endregion
 
         public Dictionary<string, string> Hosts;
+
         private static Storage instance = null;
         public static Storage GetStorage()
         {
@@ -85,7 +86,15 @@ namespace TMService.MVVM.Model
 
             return instance;
         }
-        public Storage() { }
+        public Storage() {
+
+        }
+
+        public void GetAllData()
+        {
+            Tasks = DataBase.GetDB().GetAllTasks();
+            Users = DataBase.GetDB().GetAllUsers();
+        }
         
     }
 }

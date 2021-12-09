@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         xmlns:core="clr-namespace:TMService.CORE"
+        xmlns:struct="clr-namespace:TMStructure;assembly=TMStructure"
         xmlns:m="clr-namespace:TMService.MVVM.Model"
         xmlns:local="clr-namespace:TMService.MVVM.View"
         xmlns:vm="clr-namespace:TMService.MVVM.ViewModel"
@@ -13,13 +14,14 @@
         mc:Ignorable="d"
         Height="560" Width="1200"
         Background="Transparent" WindowStyle="None" AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen" Title="StartView" 
+        WindowStartupLocation="CenterScreen" Title="Сервис задачь" 
         x:Name="SWindow"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
     <Window.DataContext>
-        <vm:StartWindow_ViewModel />
+        <vm:StartViewModel />
     </Window.DataContext>
+    
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -82,7 +84,7 @@
                     <!-- Users Data-->
                     <ItemsControl ItemsSource="{Binding Users}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type core:User}" >
+                            <DataTemplate DataType="{x:Type struct:User}" >
                                 <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" materialDesign:ShadowAssist.ShadowEdges="Bottom,Right" Padding="16" Margin="12">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -128,18 +130,25 @@
                 <GroupBox Grid.Row="1" Grid.Column="2"  Header="задачи" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="1 12 1 12">
                     <GroupBox.HeaderTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Hexagons" Height="18"  Width="18" VerticalAlignment="Center" />
-                                <TextBlock 
-                                Margin="8,0,0,0" 
-                                VerticalAlignment="Center"  Text="задачи"/>
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Hexagons" Height="18"  Width="18" VerticalAlignment="Center" />
+                                    <TextBlock  Margin="8,0,0,0" VerticalAlignment="Center"  Text="задачи"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Margin="0" Width="22" Height="22" Padding="3" Command="{Binding Path=DataContext.AddTask_Command, RelativeSource={RelativeSource AncestorType=GroupBox}}" Background="#FF668B60">
+                                    <materialDesign:PackIcon Kind="PlaylistAdd" Width="12" />
+                                </Button>
+                            </Grid>
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>
                     <!-- Task Data -->
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type core:Task}" >
+                            <DataTemplate DataType="{x:Type struct:Task}" >
                                 <Border x:Name="Border" Padding="8">
                                     <Grid ToolTip="{Binding Hint}" ToolTipService.Placement="Left">
                                         <!--<Grid.ToolTip>

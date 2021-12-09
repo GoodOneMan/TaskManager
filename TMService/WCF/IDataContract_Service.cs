@@ -21,6 +21,8 @@ namespace TMService.WCF
     public interface IDataContract_Callback
     {
         [OperationContract(IsOneWay = true)]
-        void DataContractCallback(string msg, Task task);
+        void DataContractCallback_Task(string msg, Task task);
+        [OperationContract(IsOneWay = true)]
+        void DataContractCallback_AllTasks(string msg, ObservableCollection<Task> tasks);
     }
 }
