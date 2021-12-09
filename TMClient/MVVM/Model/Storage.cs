@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using TMService.CORE;
+using TMClient.CORE;
+using TMClient.WCF;
 using TMStructure;
 
-namespace TMService.MVVM.Model
+namespace TMClient.MVVM.Model
 {
-    class Storage: IObservable
+    class Storage : IObservable
     {
         #region IObservable
         private List<IObserver> observers = new List<IObserver>();
@@ -31,17 +32,6 @@ namespace TMService.MVVM.Model
         #endregion
 
         #region Property
-        private ObservableCollection<User> _users;
-        public ObservableCollection<User> Users
-        {
-            get { return _users; }
-            set
-            {
-                _users = value;
-                NotifyObservers(typeof(ObservableCollection<User>));
-            }
-        }
-
         private ObservableCollection<Task> _tasks;
         public ObservableCollection<Task> Tasks
         {
@@ -63,21 +53,9 @@ namespace TMService.MVVM.Model
                 NotifyObservers(typeof(Task));
             }
         }
-        
-        private ObservableCollection<string> _log;
-        public ObservableCollection<string> Log
-        {
-            get { return _log; }
-            set
-            {
-                _log = value;
-                NotifyObservers(typeof(ObservableCollection<string>));
-            }
-        }
         #endregion
 
-        public Dictionary<string, string> Hosts;
-
+        public HostClient HostClient = null;
         private static Storage instance = null;
         public static Storage GetStorage()
         {
@@ -86,17 +64,10 @@ namespace TMService.MVVM.Model
 
             return instance;
         }
-        public Storage() {
-
-        }
-
-        public void GetAllData()
-        {
-            Tasks = DataBase.GetDB().GetAllTasks();
-            Users = DataBase.GetDB().GetAllUsers();
-            Log = new ObservableCollection<string>();
-            Hosts = new Dictionary<string, string>();
-        }
         
+        public Storage()
+        {
+
+        }
     }
 }

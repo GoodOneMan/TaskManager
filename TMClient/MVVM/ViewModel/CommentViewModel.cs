@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TMService.CORE;
-using TMService.MVVM.Model;
-using TMService.MVVM.View;
+using TMClient.CORE;
+using TMClient.MVVM.Model;
+using TMClient.MVVM.View;
 using TMStructure;
 
-namespace TMService.MVVM.ViewModel
+namespace TMClient.MVVM.ViewModel
 {
     class CommentViewModel : BaseViewModel
     {
@@ -58,6 +58,12 @@ namespace TMService.MVVM.ViewModel
                               }
                             );
                           Storage.NotifyObservers(typeof(Task));
+                          if (Storage.Task != null)
+                          {
+                              Storage.HostClient.SendTask(Storage.Task);
+                              Storage.Task = null;
+                          }
+
                       }
                       view.Close();
                   }));

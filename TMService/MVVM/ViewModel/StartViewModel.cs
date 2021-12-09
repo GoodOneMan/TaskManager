@@ -93,6 +93,17 @@ namespace TMService.MVVM.ViewModel
                 OnPropertyChanged("Log");
             }
         }
+
+        private bool _userSelect = true;
+        public bool UserSelect
+        {
+            get { return _userSelect; }
+            set
+            {
+                _userSelect = value;
+                OnPropertyChanged("UserSelect");
+            }
+        }
         #endregion
 
         #region Command
@@ -165,9 +176,28 @@ namespace TMService.MVVM.ViewModel
                 return _isChecked ?? (_isChecked = new RelayCommand(
                     obj =>
                     {
-                        Task task = (Task)obj;
-                        int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(item => item.Guid == task.Guid));
-                        Storage.Tasks[index] = task;
+                        //Task task = (Task)obj;
+                        //int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(item => item.Guid == task.Guid));
+                        //Storage.Tasks[index] = task;
+
+                        if (obj != null)
+                        {
+                            Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
+
+                            ObservableCollection<Task> temp = new ObservableCollection<Task>();
+                            foreach (Task t in Storage.Tasks)
+                            {
+                                if (t.IsChecked)
+                                    temp.Add(t);
+                            }
+                            foreach (Task t in Storage.Tasks)
+                            {
+                                if (!t.IsChecked)
+                                    temp.Add(t);
+                            }
+                            Storage.Tasks.Clear();
+                            Storage.Tasks = temp;
+                        }
                     }));
             }
         }
@@ -269,7 +299,6 @@ namespace TMService.MVVM.ViewModel
                 Users = Storage.Users;
                 OnPropertyChanged("Users");
             }
-
             if (type == typeof(ObservableCollection<string>))
             {
                 Log = new ObservableCollection<string>();

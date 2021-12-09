@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         Title="Добавить задачу" Height="242" Width="230"
         Background="Transparent" WindowStyle="None" AllowsTransparency="True"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         x:Name="TWindow"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     

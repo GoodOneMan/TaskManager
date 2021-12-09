@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TMService.CORE
+namespace TMClient.CORE
 {
     interface IObservable
     {

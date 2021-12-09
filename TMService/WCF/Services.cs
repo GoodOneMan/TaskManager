@@ -30,7 +30,8 @@ namespace TMService.WCF
                 user = new User();
                 user.Name = name;
                 user.Host = host;
-                user.Description = Storage.Hosts.FirstOrDefault(item => item.Key == host).Value;
+                //user.Description = Storage.Hosts.FirstOrDefault(item => item.Key == host).Value;
+                user.Description = "Пользователь — лицо или организация, которое использует действующую систему для выполнения конкретной функции.";
                 user.Guid = Guid.NewGuid();
                 user.OCtx = OperationContext.Current;
 
