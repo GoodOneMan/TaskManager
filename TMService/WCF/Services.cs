@@ -89,6 +89,13 @@ namespace TMService.WCF
             Storage.Tasks[index] = task;
             Storage.Task = task;
 
+            // Callback
+            string msg = "пользователь " + Storage.Task.User.Name + " "
+            + Storage.Task.User.Description + " обновил задачу "
+            + Storage.Task.Title + " " + Storage.Task.Guid;
+
+            DataContract_Callback_Task(msg, Storage.Task);
+
             return true;
         }
         #endregion
@@ -100,6 +107,9 @@ namespace TMService.WCF
             {
                 try
                 {
+                    if (user.Guid == task.User.Guid)
+                        continue;
+
                     user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback_Task(msg, task);
                 }
                 catch { }
@@ -121,31 +131,31 @@ namespace TMService.WCF
         #region IObserver
         public void UpdateProperty(Type type)
         {
-            if (type == typeof(ObservableCollection<Task>))
-            {
-                string msg = "коллекция задач";
+            //if (type == typeof(ObservableCollection<Task>))
+            //{
+            //    string msg = "коллекция задач";
 
-                DataContract_Callback_AllTasks(msg, Storage.Tasks);
-            }
+            //    DataContract_Callback_AllTasks(msg, Storage.Tasks);
+            //}
 
-            if (type == typeof(Task))
-            {
-                string msg = "пользователь " + Storage.Task.User.Name + " "
-                + Storage.Task.User.Description + " обновил задачу "
-                + Storage.Task.Title + " " + Storage.Task.Guid;
+            //if (type == typeof(Task))
+            //{
+            //    string msg = "пользователь " + Storage.Task.User.Name + " "
+            //    + Storage.Task.User.Description + " обновил задачу "
+            //    + Storage.Task.Title + " " + Storage.Task.Guid;
 
-                DataContract_Callback_Task(msg, Storage.Task);
-            }
+            //    DataContract_Callback_Task(msg, Storage.Task);
+            //}
 
-            if (type == typeof(ObservableCollection<User>))
-            {
+            //if (type == typeof(ObservableCollection<User>))
+            //{
              
-            }
+            //}
 
-            if (type == typeof(ObservableCollection<string>))
-            {
+            //if (type == typeof(ObservableCollection<string>))
+            //{
                 
-            }
+            //}
         }
         #endregion
     }

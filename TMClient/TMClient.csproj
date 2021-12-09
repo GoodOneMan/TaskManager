@@ -68,8 +68,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MVVM\ViewModel\CommentViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\TaskViewModel.cs" />
     <Compile Include="MVVM\View\CommentView.xaml.cs">
       <DependentUpon>CommentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\TaskView.xaml.cs">
+      <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCF\HostClient.cs" />
     <Compile Include="WCF\IContract_Service.cs" />
@@ -116,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\View\CommentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\View\TaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

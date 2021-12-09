@@ -86,6 +86,7 @@ namespace TMService.MVVM.Model
 
             return instance;
         }
+
         public Storage() {
 
         }

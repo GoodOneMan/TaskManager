@@ -8,6 +8,7 @@ using System.Xml;
 using TMStructure;
 using System.Threading;
 using System.Collections.ObjectModel;
+using TMClient.MVVM.Model;
 
 namespace TMClient.WCF
 {
@@ -164,7 +165,7 @@ namespace TMClient.WCF
 
         public void DataContractCallback_Task(string msg, Task task)
         {
-            //throw new NotImplementedException();
+            Storage.GetStorage().Task = task;
         }
 
         public void DataContractCallback_AllTasks(string msg, ObservableCollection<Task> tasks)
