@@ -9,14 +9,16 @@ using TMStructure;
 
 namespace TMService.WCF
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Reentrant, IncludeExceptionDetailInFaults = true, UseSynchronizationContext = false)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
     class Services : IContract_Service, IDataContract_Service, IObserver
     {
         Storage Storage = null;
-
+        //Guid Guid;
         public Services()
         {
             Storage = Storage.GetStorage();
+            //Guid = Guid.NewGuid();
             Storage.AddObserver(this);
         }
 
@@ -43,6 +45,9 @@ namespace TMService.WCF
             {
                 Storage.Log.Add(String.Format("пользователь {0} уже подключился", user.Description));
             }
+
+            //Storage.AddObserver(this);
+
             return user;
         }
         public bool Disconnect(Guid guid)
@@ -52,8 +57,12 @@ namespace TMService.WCF
             {
                 Storage.Users.Remove(user);
                 Storage.Log.Add(String.Format("пользователь {0} отключился", user.Description));
+
                 return true;
             }
+
+            //Storage.RemoveObserver(this);
+
             return false;
         }
         #endregion
@@ -98,6 +107,22 @@ namespace TMService.WCF
 
             return true;
         }
+        public bool SetTasks(ObservableCollection<Task> tasks)
+        {
+            if (tasks == null)
+                return false;
+
+            Storage.Tasks = tasks;
+
+            // Callback
+            string msg = "пользователь " + Storage.Task.User.Name + " "
+            + Storage.Task.User.Description + " обновил задачу "
+            + Storage.Task.Title + " " + Storage.Task.Guid;
+
+            DataContract_Callback_AllTasks(msg, Storage.Tasks);
+
+            return true;
+        }
         #endregion
 
         #region IDataContract_Callback
@@ -123,39 +148,44 @@ namespace TMService.WCF
                 {
                     user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback_AllTasks(msg, tasks);
                 }
-                catch { }
+                catch(Exception ex) {
+                    Storage.Log.Add("AllTasks " + ex.Message);
+                }
             }
         }
         #endregion
 
         #region IObserver
-        public void UpdateProperty(Type type)
+        public void UpdateProperty(Type type, FlagAccess flag)
         {
-            //if (type == typeof(ObservableCollection<Task>))
-            //{
-            //    string msg = "коллекция задач";
+            if(flag == FlagAccess.service)
+            {
+                if (type == typeof(ObservableCollection<Task>))
+                {
+                    string msg = "коллекция задач";
 
-            //    DataContract_Callback_AllTasks(msg, Storage.Tasks);
-            //}
+                    DataContract_Callback_AllTasks(msg, Storage.Tasks);
+                }
 
-            //if (type == typeof(Task))
-            //{
-            //    string msg = "пользователь " + Storage.Task.User.Name + " "
-            //    + Storage.Task.User.Description + " обновил задачу "
-            //    + Storage.Task.Title + " " + Storage.Task.Guid;
+                //if (type == typeof(Task))
+                //{
+                //    string msg = "пользователь " + Storage.Task.User.Name + " "
+                //    + Storage.Task.User.Description + " обновил задачу "
+                //    + Storage.Task.Title + " " + Storage.Task.Guid;
+                //
+                //    DataContract_Callback_Task(msg, Storage.Task);
+                //}
 
-            //    DataContract_Callback_Task(msg, Storage.Task);
-            //}
+                //if (type == typeof(ObservableCollection<User>))
+                //{
 
-            //if (type == typeof(ObservableCollection<User>))
-            //{
-             
-            //}
+                //}
 
-            //if (type == typeof(ObservableCollection<string>))
-            //{
-                
-            //}
+                //if (type == typeof(ObservableCollection<string>))
+                //{
+
+                //}
+            }
         }
         #endregion
     }

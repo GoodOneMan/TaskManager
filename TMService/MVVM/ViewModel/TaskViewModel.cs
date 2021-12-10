@@ -63,7 +63,9 @@ namespace TMService.MVVM.ViewModel
                           task.User = new User { Name = Environment.UserName, Host = Dns.GetHostName(), Guid = Guid.NewGuid(), Description = "" };
 
                           Storage.Tasks.Add(task);
-                          Storage.NotifyObservers(typeof(ObservableCollection<Task>));
+                          
+                          // Send to service
+                          Storage.NotifyObservers(typeof(ObservableCollection<Task>), FlagAccess.service);
                       }
                       view.Close();
                   }));

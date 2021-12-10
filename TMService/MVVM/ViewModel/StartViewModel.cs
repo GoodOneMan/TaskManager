@@ -176,10 +176,6 @@ namespace TMService.MVVM.ViewModel
                 return _isChecked ?? (_isChecked = new RelayCommand(
                     obj =>
                     {
-                        //Task task = (Task)obj;
-                        //int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(item => item.Guid == task.Guid));
-                        //Storage.Tasks[index] = task;
-
                         if (obj != null)
                         {
                             Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
@@ -197,6 +193,9 @@ namespace TMService.MVVM.ViewModel
                             }
                             Storage.Tasks.Clear();
                             Storage.Tasks = temp;
+
+                            // Send to service
+                            Storage.NotifyObservers(typeof(ObservableCollection<Task>), FlagAccess.service);
                         }
                     }));
             }
@@ -248,9 +247,6 @@ namespace TMService.MVVM.ViewModel
 
             // Services
             HostServices = new HostServices();
-
-            // Test
-            //TEST.Datas.FillDB();
         }
 
         private void InitStartService()
@@ -279,31 +275,34 @@ namespace TMService.MVVM.ViewModel
         }
 
         // Updata Storage Property
-        public void UpdateProperty(Type type)
+        public void UpdateProperty(Type type, FlagAccess flag)
         {
-            if(type == typeof(ObservableCollection<Task>))
+            if(flag == FlagAccess.view)
             {
-                Tasks = new ObservableCollection<Task>();
-                Tasks = Storage.Tasks;
-                OnPropertyChanged("Tasks");
-            }
-            if (type == typeof(Task))
-            {
-                Tasks = new ObservableCollection<Task>();
-                Tasks = Storage.Tasks;
-                OnPropertyChanged("Tasks");
-            }
-            if (type == typeof(ObservableCollection<User>))
-            {
-                Users = new ObservableCollection<User>();
-                Users = Storage.Users;
-                OnPropertyChanged("Users");
-            }
-            if (type == typeof(ObservableCollection<string>))
-            {
-                Log = new ObservableCollection<string>();
-                Log = Storage.Log;
-                OnPropertyChanged("Log");
+                if (type == typeof(ObservableCollection<Task>))
+                {
+                    Tasks = new ObservableCollection<Task>();
+                    Tasks = Storage.Tasks;
+                    OnPropertyChanged("Tasks");
+                }
+                if (type == typeof(Task))
+                {
+                    Tasks = new ObservableCollection<Task>();
+                    Tasks = Storage.Tasks;
+                    OnPropertyChanged("Tasks");
+                }
+                if (type == typeof(ObservableCollection<User>))
+                {
+                    Users = new ObservableCollection<User>();
+                    Users = Storage.Users;
+                    OnPropertyChanged("Users");
+                }
+                if (type == typeof(ObservableCollection<string>))
+                {
+                    Log = new ObservableCollection<string>();
+                    Log = Storage.Log;
+                    OnPropertyChanged("Log");
+                }
             }
         }
     }

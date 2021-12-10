@@ -95,6 +95,9 @@ namespace TMClient.MVVM.ViewModel
                             }
                             Storage.Tasks.Clear();
                             Storage.Tasks = temp;
+
+                            // Send service
+                            HostClient.GetClient().SendTask(task);
                         }
                     }));
             }

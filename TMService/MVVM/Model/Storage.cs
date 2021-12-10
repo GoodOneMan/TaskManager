@@ -8,6 +8,7 @@ using TMStructure;
 
 namespace TMService.MVVM.Model
 {
+
     class Storage: IObservable
     {
         #region IObservable
@@ -23,10 +24,10 @@ namespace TMService.MVVM.Model
             observers.Remove(o);
         }
 
-        public void NotifyObservers(Type type)
+        public void NotifyObservers(Type type, FlagAccess flag)
         {
             foreach (IObserver observer in observers)
-                observer.UpdateProperty(type);
+                observer.UpdateProperty(type, flag);
         }
         #endregion
 
@@ -38,7 +39,7 @@ namespace TMService.MVVM.Model
             set
             {
                 _users = value;
-                NotifyObservers(typeof(ObservableCollection<User>));
+                NotifyObservers(typeof(ObservableCollection<User>), FlagAccess.view);
             }
         }
 
@@ -49,7 +50,7 @@ namespace TMService.MVVM.Model
             set
             {
                 _tasks = value;
-                NotifyObservers(typeof(ObservableCollection<Task>));
+                NotifyObservers(typeof(ObservableCollection<Task>), FlagAccess.view);
             }
         }
 
@@ -60,7 +61,7 @@ namespace TMService.MVVM.Model
             set
             {
                 _task = value;
-                NotifyObservers(typeof(Task));
+                NotifyObservers(typeof(Task), FlagAccess.view);
             }
         }
         
@@ -71,7 +72,7 @@ namespace TMService.MVVM.Model
             set
             {
                 _log = value;
-                NotifyObservers(typeof(ObservableCollection<string>));
+                NotifyObservers(typeof(ObservableCollection<string>), FlagAccess.view);
             }
         }
         #endregion

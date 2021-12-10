@@ -170,7 +170,7 @@ namespace TMClient.WCF
 
         public void DataContractCallback_AllTasks(string msg, ObservableCollection<Task> tasks)
         {
-            //throw new NotImplementedException();
+            Storage.GetStorage().Tasks = tasks;
         }
         #endregion
     }

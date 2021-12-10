@@ -16,6 +16,8 @@ namespace TMService.WCF
 
         [OperationContract]
         bool SetTask(Task task);
+        [OperationContract]
+        bool SetTasks(ObservableCollection<Task> tasks);
     }
 
     public interface IDataContract_Callback

@@ -57,7 +57,8 @@ namespace TMService.MVVM.ViewModel
                                   User = Task.User
                               }
                             );
-                          Storage.NotifyObservers(typeof(Task));
+
+                          Storage.NotifyObservers(typeof(Task), FlagAccess.service);
                       }
                       view.Close();
                   }));
