@@ -2,15 +2,59 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using TMService.CORE;
+using TMService.WCF;
 using TMStructure;
 
 namespace TMService.MVVM.Model
 {
-
-    class Storage: IObservable
+    #region Events class
+    public class TasksChangedEventArgs : EventArgs
     {
+        public readonly User User;
+        public readonly ObservableCollection<Task> Tasks;
+
+        public TasksChangedEventArgs(User user, ObservableCollection<Task> tasks)
+        {
+            User = user;
+            Tasks = tasks;
+        }
+    }
+
+    public class TaskChangedEventArgs : EventArgs
+    {
+        public readonly User User;
+        public readonly Task Task;
+
+        public TaskChangedEventArgs(User user, Task task)
+        {
+            User = user;
+            Task = task;
+        }
+    }
+    #endregion
+
+
+    class Storage : IObservable
+    {
+        #region Events
+        // Tasks
+        public event EventHandler<TasksChangedEventArgs> TasksChanged;
+        public virtual void OnTasksChanged(TasksChangedEventArgs e)
+        {
+            if (TasksChanged != null) TasksChanged(this, e);
+        }
+
+        // Task
+        public event EventHandler<TaskChangedEventArgs> TaskChanged;
+        public virtual void OnTaskChanged(TaskChangedEventArgs e)
+        {
+            if (TaskChanged != null) TaskChanged(this, e);
+        }
+        #endregion
+
         #region IObservable
         private List<IObserver> observers = new List<IObserver>();
 
@@ -24,10 +68,10 @@ namespace TMService.MVVM.Model
             observers.Remove(o);
         }
 
-        public void NotifyObservers(Type type, FlagAccess flag)
+        public void NotifyObservers()
         {
             foreach (IObserver observer in observers)
-                observer.UpdateProperty(type, flag);
+                observer.UpdateProperty();
         }
         #endregion
 
@@ -39,7 +83,7 @@ namespace TMService.MVVM.Model
             set
             {
                 _users = value;
-                NotifyObservers(typeof(ObservableCollection<User>), FlagAccess.view);
+                NotifyObservers();
             }
         }
 
@@ -50,21 +94,11 @@ namespace TMService.MVVM.Model
             set
             {
                 _tasks = value;
-                NotifyObservers(typeof(ObservableCollection<Task>), FlagAccess.view);
+                BlockedTasks(_tasks);
+                NotifyObservers();
             }
         }
 
-        private Task _task;
-        public Task Task
-        {
-            get { return _task; }
-            set
-            {
-                _task = value;
-                NotifyObservers(typeof(Task), FlagAccess.view);
-            }
-        }
-        
         private ObservableCollection<string> _log;
         public ObservableCollection<string> Log
         {
@@ -72,13 +106,16 @@ namespace TMService.MVVM.Model
             set
             {
                 _log = value;
-                NotifyObservers(typeof(ObservableCollection<string>), FlagAccess.view);
+                NotifyObservers();
             }
         }
         #endregion
 
+        public User CurrentUser;
         public Dictionary<string, string> Hosts;
-
+        public System.Windows.Threading.Dispatcher DispatcherUI = null;
+        public Task Task;
+        
         private static Storage instance = null;
         public static Storage GetStorage()
         {
@@ -89,16 +126,82 @@ namespace TMService.MVVM.Model
         }
 
         public Storage() {
-
+            CurrentUser = new User()
+            {
+                Name = Environment.UserName,
+                Host = "Service host",
+                Description = "Current",
+                Guid = Guid.NewGuid(),
+                OCtx = null
+            };
+            DispatcherUI = System.Windows.Application.Current.Dispatcher;
+            Services.LogChanged += ServiceEvent_LogChanged;
         }
 
-        public void GetAllData()
+        public void GetState()
         {
-            Tasks = DataBase.GetDB().GetAllTasks();
-            Users = DataBase.GetDB().GetAllUsers();
+            DataBase.GetDB().Connection();
+
+            Tasks = DataBase.GetDB().GetT();
+            Users = DataBase.GetDB().GetU();
+
+            if (Users.FirstOrDefault(item => item.Name == CurrentUser.Name && item.Host == CurrentUser.Host) == null)
+                Users.Add(CurrentUser);
+
             Log = new ObservableCollection<string>();
             Hosts = new Dictionary<string, string>();
         }
-        
+
+        public bool SetState()
+        {
+            bool flag = false;
+
+            DataBase.GetDB().Disconnection(Users, Tasks);
+            Tasks = new ObservableCollection<Task>();
+            Users = new ObservableCollection<User>();
+
+            return flag;
+        }
+
+        public void ImplementTask(Task task)
+        {
+            int index = Tasks.IndexOf(Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+            Tasks[index] = task;
+            Task = null;
+            NotifyObservers();
+        }
+
+        public void ServiceEvent_LogChanged(object sender, LogChangedEventArgs e)
+        {
+            DispatcherUI.Invoke(() => Log.Add(e.Message));
+        }
+
+        private ObservableCollection<Task> BlockedTasks(ObservableCollection<Task> collection)
+        {
+            foreach (Task task in collection)
+            {
+                // Enable
+                if (task.IsChecked && task.BlockedUser != null)
+                    if (task.BlockedUser.Guid == CurrentUser.Guid)
+                        task.Enable = true;
+                    else
+                        task.Enable = false;
+                else
+                    task.Enable = true;
+
+                try
+                {
+                    // Edit enable
+                    if (CurrentUser.Guid == task.User.Guid)
+                        task.EditEnable = true;
+                    else
+                        task.EditEnable = false;
+                }
+                catch { }
+                
+            }
+
+            return collection;
+        }
     }
 }

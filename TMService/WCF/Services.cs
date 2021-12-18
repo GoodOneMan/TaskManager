@@ -9,183 +9,171 @@ using TMStructure;
 
 namespace TMService.WCF
 {
-    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Reentrant, IncludeExceptionDetailInFaults = true, UseSynchronizationContext = false)]
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    class Services : IContract_Service, IDataContract_Service, IObserver
+
+    #region Events class
+    public class LogChangedEventArgs : EventArgs
     {
+        public readonly string Message;
+
+        public LogChangedEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
+    #endregion
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Reentrant, IncludeExceptionDetailInFaults = true, UseSynchronizationContext = false)]
+    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    class Services : IContract_Service
+    {
+        #region Events
+        // Log
+        public static event EventHandler<LogChangedEventArgs> LogChanged;
+        public virtual void OnLogChanged(LogChangedEventArgs e)
+        {
+            if (LogChanged != null) LogChanged(this, e);
+        }
+        #endregion
+
         Storage Storage = null;
-        //Guid Guid;
+        
         public Services()
         {
             Storage = Storage.GetStorage();
-            //Guid = Guid.NewGuid();
-            Storage.AddObserver(this);
         }
 
         #region IContract_Service
-        public User Connect(string name, string host)
+        public User Connect(string UserName, string UserHost)
         {
-            User user = Storage.Users.FirstOrDefault(item => item.Host == host && item.Name == name);
+            User user = Storage.Users.FirstOrDefault(item => item.Name == UserName && item.Host == UserHost);
 
             if (user == null)
             {
                 user = new User();
-                user.Name = name;
-                user.Host = host;
-                //user.Description = Storage.Hosts.FirstOrDefault(item => item.Key == host).Value;
-                user.Description = "Пользователь — лицо или организация, которое использует действующую систему для выполнения конкретной функции.";
+                user.Name = UserName;
+                user.Host = UserHost;
+                user.Description = Storage.Hosts.FirstOrDefault(item => item.Key == UserHost).Value;
                 user.Guid = Guid.NewGuid();
                 user.OCtx = OperationContext.Current;
 
-                Storage.Log.Add(String.Format("пользователь {0} подключился в {1}", user.Description, DateTime.Now.ToString()));
+                Storage.DispatcherUI.Invoke(()=> { Storage.Users.Add(user); });
 
-                Storage.Users.Add(user);
+                OnLogChanged(new LogChangedEventArgs(String.Format("новый пользователь {0} подключился в {1}", user.Description, DateTime.Now.ToString())));
             }
             else
             {
-                Storage.Log.Add(String.Format("пользователь {0} уже подключился", user.Description));
+                user.OCtx = OperationContext.Current;
+                OnLogChanged(new LogChangedEventArgs(String.Format("пользователь {0} {1} найден ", user.Description, user.Name)));
             }
 
-            //Storage.AddObserver(this);
-
+            Storage.TaskChanged += ServiceEvent_TaskChanged;
+            Storage.TasksChanged += ServiceEvent_TasksChanged;
+            
             return user;
         }
-        public bool Disconnect(Guid guid)
+        // User guid
+        public bool Disconnect(Guid UserGuid)
         {
-            User user = Storage.Users.FirstOrDefault(item => item.Guid == guid);
+            Storage.TaskChanged -= ServiceEvent_TaskChanged;
+            Storage.TasksChanged -= ServiceEvent_TasksChanged;
+
+            User user = Storage.Users.FirstOrDefault(item => item.Guid == UserGuid);
             if (user != null)
             {
-                Storage.Users.Remove(user);
-                Storage.Log.Add(String.Format("пользователь {0} отключился", user.Description));
-
+                OnLogChanged(new LogChangedEventArgs(String.Format("пользователь {0} {1} отключился", user.Description, user.Name)));
                 return true;
             }
-
-            //Storage.RemoveObserver(this);
-
             return false;
         }
-        #endregion
-
-        #region IContract_Callback
-        private void Contract_Callback(string msg)
+        // Task guid
+        public Task GetTask(Guid TaskGuid)
         {
-            foreach (User user in Storage.Users)
-            {
-                user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback(msg);
-            }
+            return Storage.Tasks.FirstOrDefault(item => item.Guid == TaskGuid);
         }
-        #endregion
-
-        #region IDataContract_Service
-        public Task GetTask(Guid guid)
-        {
-            return Storage.Tasks.FirstOrDefault(item => item.Guid == guid);
-        }
-
+        // 
         public ObservableCollection<Task> GetTasks()
         {
             return Storage.Tasks;
         }
-
-        public bool SetTask(Task task)
+        // User guid
+        public bool SetTask(Guid UserGuid, Task task)
         {
             if (task == null)
                 return false;
 
-            int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+            Storage.DispatcherUI.Invoke(() =>
+            {
+                int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+                Storage.Tasks[index] = task;
+                Storage.NotifyObservers();
+            });
 
-            Storage.Tasks[index] = task;
-            Storage.Task = task;
-
-            // Callback
-            string msg = "пользователь " + Storage.Task.User.Name + " "
-            + Storage.Task.User.Description + " обновил задачу "
-            + Storage.Task.Title + " " + Storage.Task.Guid;
-
-            DataContract_Callback_Task(msg, Storage.Task);
+            Callback_Task(UserGuid, Storage.Task);
 
             return true;
         }
-        public bool SetTasks(ObservableCollection<Task> tasks)
+        // User guid
+        public bool SetTasks(Guid UserGuid, ObservableCollection<Task> tasks)
         {
             if (tasks == null)
                 return false;
 
             Storage.Tasks = tasks;
 
-            // Callback
-            string msg = "пользователь " + Storage.Task.User.Name + " "
-            + Storage.Task.User.Description + " обновил задачу "
-            + Storage.Task.Title + " " + Storage.Task.Guid;
-
-            DataContract_Callback_AllTasks(msg, Storage.Tasks);
+            Callback_AllTasks(UserGuid, Storage.Tasks);
 
             return true;
         }
         #endregion
 
-        #region IDataContract_Callback
-        private void DataContract_Callback_Task(string msg, Task task)
+        #region IContract_Callback
+        private void Callback_Task(Guid UserGuid, Task task)
         {
+            User CallbackUser = Storage.Users.FirstOrDefault(item => item.Guid == UserGuid);
             foreach (User user in Storage.Users)
             {
-                try
+                if(user.Guid != UserGuid)
                 {
-                    if (user.Guid == task.User.Guid)
-                        continue;
-
-                    user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback_Task(msg, task);
+                    try
+                    {
+                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_Task(CallbackUser, Storage.Task);
+                    }
+                    catch (Exception ex) { }
                 }
-                catch { }
             }
         }
-        private void DataContract_Callback_AllTasks(string msg, ObservableCollection<Task>  tasks)
+
+        private void Callback_AllTasks(Guid UserGuid, ObservableCollection<Task> tasks)
         {
+            User CallbackUser = Storage.Users.FirstOrDefault(item => item.Guid == UserGuid);
             foreach (User user in Storage.Users)
             {
-                try
+                if (user.Guid != UserGuid)
                 {
-                    user.OCtx.GetCallbackChannel<IDataContract_Callback>().DataContractCallback_AllTasks(msg, tasks);
-                }
-                catch(Exception ex) {
-                    Storage.Log.Add("AllTasks " + ex.Message);
+                    try
+                    {
+                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_AllTasks(CallbackUser, Storage.Tasks);
+                    }
+                    catch (Exception ex) { }
                 }
             }
         }
         #endregion
 
-        #region IObserver
-        public void UpdateProperty(Type type, FlagAccess flag)
+        #region Event changed task
+        public void ServiceEvent_TaskChanged(object sender, TaskChangedEventArgs e)
         {
-            if(flag == FlagAccess.service)
-            {
-                if (type == typeof(ObservableCollection<Task>))
-                {
-                    string msg = "коллекция задач";
-
-                    DataContract_Callback_AllTasks(msg, Storage.Tasks);
-                }
-
-                //if (type == typeof(Task))
-                //{
-                //    string msg = "пользователь " + Storage.Task.User.Name + " "
-                //    + Storage.Task.User.Description + " обновил задачу "
-                //    + Storage.Task.Title + " " + Storage.Task.Guid;
-                //
-                //    DataContract_Callback_Task(msg, Storage.Task);
-                //}
-
-                //if (type == typeof(ObservableCollection<User>))
-                //{
-
-                //}
-
-                //if (type == typeof(ObservableCollection<string>))
-                //{
-
-                //}
-            }
+            if(e.User == null)
+                Callback_Task(Storage.CurrentUser.Guid, e.Task);
+            else
+                Callback_Task(e.User.Guid, e.Task);
+        }
+        public void ServiceEvent_TasksChanged(object sender, TasksChangedEventArgs e)
+        {
+            if (e.User == null)
+                Callback_AllTasks(Storage.CurrentUser.Guid, e.Tasks);
+            else
+                Callback_AllTasks(e.User.Guid, e.Tasks);
         }
         #endregion
     }

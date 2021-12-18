@@ -43,7 +43,7 @@
                     Text="Прокомментировать"/>
 
                 <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" 
-                          ItemsSource="{Binding Task.Comments}" 
+                          ItemsSource="{Binding Comments}" 
                           Grid.IsSharedSizeScope="True" 
                           Margin="5 0 5 0" 
                           ScrollViewer.IsDeferredScrollingEnabled="True">
@@ -57,7 +57,7 @@
                                     <TextBlock Padding="6" TextWrapping="Wrap">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{} User: {0} {1} {2}">
-                                                <Binding Path="User.Guid"></Binding>
+                                                <Binding Path="User.Name"></Binding>
                                                 <Binding Source="{x:Static System:Environment.NewLine}"/>
                                                 <Binding Path="Message"></Binding>
                                             </MultiBinding>

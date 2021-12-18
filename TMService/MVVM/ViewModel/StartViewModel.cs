@@ -158,13 +158,9 @@ namespace TMService.MVVM.ViewModel
                     obj =>
                     {
                         if (isRun)
-                        {
-                            InitStopService();
-                        }
+                            StopService();
                         else
-                        {
-                            InitStartService();
-                        }
+                            StartService();
                     }));
             }
         }
@@ -180,22 +176,31 @@ namespace TMService.MVVM.ViewModel
                         {
                             Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
 
+                            if (task.IsChecked)
+                            {
+                                task.BlockedUser = Storage.CurrentUser;
+                                task.Enable = false;
+                            }
+                            else
+                            {
+                                task.BlockedUser = null;
+                                task.Enable = true;
+                            }
+
+                            //task.BlockedUser = Storage.CurrentUser;
+                            //task.Enable = false;
+
                             ObservableCollection<Task> temp = new ObservableCollection<Task>();
                             foreach (Task t in Storage.Tasks)
-                            {
                                 if (t.IsChecked)
                                     temp.Add(t);
-                            }
+
                             foreach (Task t in Storage.Tasks)
-                            {
                                 if (!t.IsChecked)
                                     temp.Add(t);
-                            }
-                            Storage.Tasks.Clear();
-                            Storage.Tasks = temp;
 
-                            // Send to service
-                            Storage.NotifyObservers(typeof(ObservableCollection<Task>), FlagAccess.service);
+                            Storage.Tasks = temp;
+                            Storage.OnTasksChanged(new TasksChangedEventArgs(Storage.CurrentUser, Storage.Tasks));
                         }
                     }));
             }
@@ -225,6 +230,19 @@ namespace TMService.MVVM.ViewModel
                     }));
             }
         }
+        private RelayCommand _editTask;
+        public RelayCommand EditTask_Command
+        {
+            get
+            {
+                return _editTask ?? (_editTask = new RelayCommand(
+                    obj =>
+                    {
+                        Storage.Task = (Task)obj;
+                        new TaskView().Show();
+                    }));
+            }
+        }
         #endregion
 
         public StartViewModel()
@@ -243,13 +261,12 @@ namespace TMService.MVVM.ViewModel
             // Storage
             Storage = Storage.GetStorage();
             Storage.AddObserver(this);
-            Storage.GetAllData();
-
+            
             // Services
             HostServices = new HostServices();
         }
 
-        private void InitStartService()
+        private void StartService()
         {
             isRun = true;
             ButtonIcon = "Stop";
@@ -260,9 +277,11 @@ namespace TMService.MVVM.ViewModel
             //service
             HostServices.InitHost();
             HostServices.StartHost();
+
+            Storage.GetState();
         }
 
-        private void InitStopService()
+        private void StopService()
         {
             isRun = false;
             ButtonIcon = "Play";
@@ -272,38 +291,28 @@ namespace TMService.MVVM.ViewModel
 
             //service
             HostServices.StopHost();
+
+            if (!Storage.SetState())
+            {
+
+            }
         }
 
         // Updata Storage Property
-        public void UpdateProperty(Type type, FlagAccess flag)
+        public void UpdateProperty()
         {
-            if(flag == FlagAccess.view)
-            {
-                if (type == typeof(ObservableCollection<Task>))
-                {
-                    Tasks = new ObservableCollection<Task>();
-                    Tasks = Storage.Tasks;
-                    OnPropertyChanged("Tasks");
-                }
-                if (type == typeof(Task))
-                {
-                    Tasks = new ObservableCollection<Task>();
-                    Tasks = Storage.Tasks;
-                    OnPropertyChanged("Tasks");
-                }
-                if (type == typeof(ObservableCollection<User>))
-                {
-                    Users = new ObservableCollection<User>();
-                    Users = Storage.Users;
-                    OnPropertyChanged("Users");
-                }
-                if (type == typeof(ObservableCollection<string>))
-                {
-                    Log = new ObservableCollection<string>();
-                    Log = Storage.Log;
-                    OnPropertyChanged("Log");
-                }
-            }
+            Tasks = new ObservableCollection<Task>();
+            Tasks = Storage.Tasks;
+            OnPropertyChanged("Tasks");
+
+            Users = new ObservableCollection<User>();
+            Users = Storage.Users;
+            OnPropertyChanged("Users");
+
+            Log = new ObservableCollection<string>();
+            Log = Storage.Log;
+            OnPropertyChanged("Log");
         }
+  
     }
 }

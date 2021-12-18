@@ -4,6 +4,6 @@ namespace TMService.CORE
 {
     interface IObserver
     {
-        void UpdateProperty(Type type, FlagAccess flag);
+        void UpdateProperty();
     }
 }

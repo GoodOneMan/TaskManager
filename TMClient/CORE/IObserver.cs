@@ -4,6 +4,6 @@ namespace TMClient.CORE
 {
     interface IObserver
     {
-        void UpdateProperty(Type type);
+        void UpdateProperty();
     }
 }

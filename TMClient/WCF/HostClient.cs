@@ -12,19 +12,15 @@ using TMClient.MVVM.Model;
 
 namespace TMClient.WCF
 {
-    class HostClient : IContract_Callback, IDataContract_Callback
+    class HostClient : IContract_Callback
     {
-        Uri address_contract = null;
-        Uri address_data_contract = null;
+        Uri address = null;
         NetTcpBinding binding = null;
-        DuplexChannelFactory<IContract_Service> factory_contract = null;
-        DuplexChannelFactory<IDataContract_Service> factory_data_contract = null;
-        IContract_Service channel_contract = null;
-        IDataContract_Service channel_data_contract = null;
-        InstanceContext context_contract = null;
-        InstanceContext context_data_contract = null;
+        DuplexChannelFactory<IContract_Service> factory = null;
+        IContract_Service channel = null;
+        InstanceContext context = null;
 
-        public User user { get; private set; }
+        Storage Storage = null;
 
         private static HostClient instance = null;
         public static HostClient GetClient()
@@ -38,18 +34,17 @@ namespace TMClient.WCF
         private HostClient()
         {
             InitClient();
+            Storage = Storage.GetStorage();
         }
 
         private void InitClient()
         {
             #region Address
-            //address_contract = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
-            //address_data_contract = new Uri("net.tcp://192.168.0.162:4005/IDataContract_Service");
-            address_contract = new Uri("net.tcp://localhost:4004/IContract_Service");
-            address_data_contract = new Uri("net.tcp://localhost:4005/IDataContract_Service");
+            address = new Uri("net.tcp://localhost:4004/IContract_Service");
+            //address = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
             #endregion
 
-            #region Binding
+            #region Binding Contract
             binding = new NetTcpBinding();
             binding.CloseTimeout = TimeSpan.FromMinutes(10); // Возвращает или задает интервал времени для закрытия подключения до того, как транспорт создаст исключение.
             binding.OpenTimeout = TimeSpan.FromMinutes(10); // Возвращает или задает интервал времени для открытия подключения до того, как транспорт создаст исключение.
@@ -96,15 +91,9 @@ namespace TMClient.WCF
 
             #endregion
 
-            context_contract = new InstanceContext(this);
-            context_data_contract = new InstanceContext(this);
-
-            factory_contract = new DuplexChannelFactory<IContract_Service>(context_contract, binding, new EndpointAddress(address_contract));
-            factory_data_contract = new DuplexChannelFactory<IDataContract_Service>(context_data_contract, binding, new EndpointAddress(address_data_contract));
-
-            channel_contract = factory_contract.CreateChannel();
-            channel_data_contract = factory_data_contract.CreateChannel();
-
+            context = new InstanceContext(this);
+            factory = new DuplexChannelFactory<IContract_Service>(context, binding, new EndpointAddress(address));
+            channel = factory.CreateChannel();
         }
 
         #region IContract_Service
@@ -112,7 +101,9 @@ namespace TMClient.WCF
         {
             try
             {
-                user = channel_contract.Connect(Environment.UserName, Dns.GetHostName());
+
+                //Storage.DispatcherUI.Invoke(() => Storage.CurrentUser = channel.Connect(Environment.UserName, Dns.GetHostName()));
+                Storage.CurrentUser = channel.Connect(Environment.UserName, Dns.GetHostName());
                 return true;
             }
             catch (Exception e)
@@ -128,16 +119,13 @@ namespace TMClient.WCF
 
         public bool Desconnect()
         {
-            if (channel_contract != null && channel_data_contract != null)
+            if (channel != null)
             {
-                if (user != null)
-                    channel_contract.Disconnect(user.Guid);
+                if (Storage.CurrentUser != null)
+                    channel.Disconnect(Storage.CurrentUser.Guid);
 
-                factory_contract = null;
-                factory_data_contract = null;
-
-                channel_contract = null;
-                channel_data_contract = null;
+                factory = null;
+                channel = null;
 
                 return true;
             }
@@ -146,29 +134,29 @@ namespace TMClient.WCF
         }
         #endregion
 
-        #region IDataContract_Service
+        #region IContract_Callback
         public ObservableCollection<Task> GetTasks()
         {
-            return channel_data_contract.GetTasks();
+            return channel.GetTasks();
         }
         public void SendTask(Task task)
         {
-            channel_data_contract.SetTask(task);
+            channel.SetTask(Storage.CurrentUser.Guid, task);
+        }
+        public void SendTasks(ObservableCollection<Task> tasks)
+        {
+            channel.SetTasks(Storage.CurrentUser.Guid, tasks);
         }
         #endregion
 
-        #region Callback
-        public void ContractCallback(string msg)
+        #region IContract_Callback
+        public void ContractCallback_Task(User User, Task task)
         {
-            //throw new NotImplementedException();
+            int index = Storage.GetStorage().Tasks.IndexOf(Storage.GetStorage().Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+            Storage.GetStorage().Tasks[index] = task;
+            Storage.NotifyObservers();
         }
-
-        public void DataContractCallback_Task(string msg, Task task)
-        {
-            Storage.GetStorage().Task = task;
-        }
-
-        public void DataContractCallback_AllTasks(string msg, ObservableCollection<Task> tasks)
+        public void ContractCallback_AllTasks(User User, ObservableCollection<Task> tasks)
         {
             Storage.GetStorage().Tasks = tasks;
         }

@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using TMClient.CORE;
 using TMClient.MVVM.Model;
 using TMClient.MVVM.View;
+using TMClient.WCF;
 using TMStructure;
 
 namespace TMClient.MVVM.ViewModel
 {
     class CommentViewModel : BaseViewModel
     {
-        Storage Storage = null;
+        public Storage Storage = null;
 
         #region Property
-        private Task _task;
-        public Task Task
+        private ObservableCollection<Comment> _comments;
+        public ObservableCollection<Comment> Comments
         {
-            get { return _task; }
+            get { return _comments; }
             set
             {
-                _task = value;
-                OnPropertyChanged("Task");
+                _comments = value;
+                OnPropertyChanged("Comments");
             }
         }
+
         private string _message;
         public string Message
         {
@@ -48,23 +51,21 @@ namespace TMClient.MVVM.ViewModel
                       CommentView view = (CommentView)obj;
                       if (!String.IsNullOrEmpty(Message))
                       {
-                          Task.Comments.Add(
+                          Comments.Add(
                               new Comment()
                               {
                                   Guid = Guid.NewGuid(),
                                   Message = Message,
-                                  TaskGuid = Task.Guid,
-                                  User = Task.User
+                                  TaskGuid = Storage.Task.Guid,
+                                  User = Storage.CurrentUser
                               }
                             );
-                          Storage.NotifyObservers(typeof(Task));
-                          if (Storage.Task != null)
-                          {
-                              Storage.HostClient.SendTask(Storage.Task);
-                              Storage.Task = null;
-                          }
-
+                          HostClient.GetClient().SendTask(Storage.Task);
                       }
+
+                      Storage.ImplementTask(Storage.Task);
+                      Storage.NotifyObservers();
+
                       view.Close();
                   }));
             }
@@ -74,7 +75,7 @@ namespace TMClient.MVVM.ViewModel
         public CommentViewModel()
         {
             Storage = Storage.GetStorage();
-            Task = Storage.Task;
+            Comments = Storage.Task.Comments;
         }
     }
 }

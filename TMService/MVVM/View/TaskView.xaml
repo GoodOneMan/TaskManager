@@ -40,7 +40,7 @@
                 VerticalAlignment="Center"
                 TextWrapping="Wrap"
                 Margin="10,10,10,0"
-                Text="добавить задачу"/>
+                Text="{Binding ViewTitle}"/>
 
                 <TextBox Grid.Row="1" Grid.ColumnSpan="2"
                 VerticalAlignment="Top"

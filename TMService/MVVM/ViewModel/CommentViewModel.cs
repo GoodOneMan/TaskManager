@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using TMService.CORE;
@@ -11,17 +12,17 @@ namespace TMService.MVVM.ViewModel
 {
     class CommentViewModel : BaseViewModel
     {
-        Storage Storage = null;
+        public Storage Storage = null;
 
         #region Property
-        private Task _task;
-        public Task Task
+        private ObservableCollection<Comment> _comments;
+        public ObservableCollection<Comment> Comments
         {
-            get { return _task; }
+            get { return _comments; }
             set
             {
-                _task = value;
-                OnPropertyChanged("Task");
+                _comments = value;
+                OnPropertyChanged("Comments");
             }
         }
         private string _message;
@@ -48,18 +49,20 @@ namespace TMService.MVVM.ViewModel
                       CommentView view = (CommentView)obj;
                       if (!String.IsNullOrEmpty(Message))
                       {
-                          Task.Comments.Add(
+                          Comments.Add(
                               new Comment()
                               {
                                   Guid = Guid.NewGuid(),
                                   Message = Message,
-                                  TaskGuid = Task.Guid,
-                                  User = Task.User
+                                  TaskGuid = Storage.Task.Guid,
+                                  User = Storage.CurrentUser
                               }
                             );
-
-                          Storage.NotifyObservers(typeof(Task), FlagAccess.service);
+                          Storage.OnTaskChanged(new TaskChangedEventArgs(null, Storage.Task));
                       }
+
+                      Storage.ImplementTask(Storage.Task);
+
                       view.Close();
                   }));
             }
@@ -69,7 +72,7 @@ namespace TMService.MVVM.ViewModel
         public CommentViewModel()
         {
             Storage = Storage.GetStorage();
-            Task = Storage.Task;
+            Comments = Storage.Task.Comments;
         }
     }
 }

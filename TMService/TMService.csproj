@@ -87,7 +87,6 @@
     <Compile Include="TEST\Datas.cs" />
     <Compile Include="WCF\HostServices.cs" />
     <Compile Include="WCF\IContract_Service.cs" />
-    <Compile Include="WCF\IDataContract_Service.cs" />
     <Compile Include="WCF\Services.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +119,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="MVVM\Model\DataBaseS.txt" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TMStructure\TMStructure.csproj">
       <Project>{73f8322d-d49c-4cb5-9734-a8ea50362d9f}</Project>

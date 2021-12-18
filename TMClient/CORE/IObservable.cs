@@ -6,6 +6,6 @@ namespace TMClient.CORE
     {
         void AddObserver(IObserver o);
         void RemoveObserver(IObserver o);
-        void NotifyObservers(Type type);
+        void NotifyObservers();
     }
 }

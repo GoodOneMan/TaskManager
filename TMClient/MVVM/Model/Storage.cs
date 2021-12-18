@@ -24,10 +24,10 @@ namespace TMClient.MVVM.Model
             observers.Remove(o);
         }
 
-        public void NotifyObservers(Type type)
+        public void NotifyObservers()
         {
             foreach (IObserver observer in observers)
-                observer.UpdateProperty(type);
+                observer.UpdateProperty();
         }
         #endregion
 
@@ -39,23 +39,15 @@ namespace TMClient.MVVM.Model
             set
             {
                 _tasks = value;
-                NotifyObservers(typeof(ObservableCollection<Task>));
-            }
-        }
-
-        private Task _task;
-        public Task Task
-        {
-            get { return _task; }
-            set
-            {
-                _task = value;
-                NotifyObservers(typeof(Task));
+                BlockedTasks(_tasks);
+                NotifyObservers();
             }
         }
         #endregion
 
-        public HostClient HostClient = null;
+        public User CurrentUser;
+        public Task Task;
+
         private static Storage instance = null;
         public static Storage GetStorage()
         {
@@ -67,7 +59,38 @@ namespace TMClient.MVVM.Model
         
         public Storage()
         {
-
         }
+
+        public void ImplementTask(Task task)
+        {
+            int index = Tasks.IndexOf(Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+            Tasks[index] = task;
+            Task = null;
+            NotifyObservers();
+        }
+
+        private ObservableCollection<Task> BlockedTasks(ObservableCollection<Task> collection)
+        {
+            foreach (Task task in collection)
+            {
+                // Enable
+                if (task.IsChecked && task.BlockedUser != null)
+                    if (task.BlockedUser.Guid == CurrentUser.Guid)
+                        task.Enable = true;
+                    else
+                        task.Enable = false;
+                else
+                    task.Enable = true;
+
+                // Edit enable
+                if (CurrentUser.Guid == task.User.Guid)
+                    task.EditEnable = true;
+                else
+                    task.EditEnable = false;
+            }
+
+            return collection;
+        }
+        
     }
 }

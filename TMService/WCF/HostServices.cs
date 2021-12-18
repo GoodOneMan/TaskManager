@@ -11,31 +11,23 @@ namespace TMService.WCF
 {
     class HostServices
     {
-        Uri address_contract = null;
-        Uri address_data_contract = null;
-
+        Uri address = null;
         Type contract = null;
-        Type data_contract = null;
-
         NetTcpBinding binding = null;
-
         ServiceHost host = null;
         
         public void InitHost()
         {
             #region Address
-            //address_contract = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
-            //address_data_contract = new Uri("net.tcp://192.168.0.162:4005/IDataContract_Service");
-            address_contract = new Uri("net.tcp://localhost:4004/IContract_Service");
-            address_data_contract = new Uri("net.tcp://localhost:4005/IDataContract_Service");
+            address = new Uri("net.tcp://localhost:4004/IContract_Service");
+            //address = new Uri("net.tcp://192.168.0.162:4004/IContract_Service");
             #endregion
 
             #region Contract
             contract = typeof(IContract_Service);
-            data_contract = typeof(IDataContract_Service);
             #endregion
 
-            #region Binding
+            #region Binding Contract
             binding = new NetTcpBinding();
             binding.CloseTimeout = TimeSpan.FromMinutes(10); // Возвращает или задает интервал времени для закрытия подключения до того, как транспорт создаст исключение.
             binding.OpenTimeout = TimeSpan.FromMinutes(10); // Возвращает или задает интервал времени для открытия подключения до того, как транспорт создаст исключение.
@@ -43,13 +35,10 @@ namespace TMService.WCF
             binding.MaxConnections = 10;
             binding.MaxBufferPoolSize = 524888; // Получает или задает максимальный допустимый размер (в байтах) буферного пула, в котором хранятся сообщения TCP, обработанные привязкой.
             binding.MaxReceivedMessageSize = 2147483647; //Получает или задает максимальный размер (в байтах) полученного сообщения, обрабатываемого привязкой.
-
             binding.ReaderQuotas = XmlDictionaryReaderQuotas.Max;
-
             //binding.ReaderQuotas.MaxArrayLength = 2147483647;
             //binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
             //binding.ReaderQuotas.MaxStringContentLength = 2147483647;
-
             binding.ReceiveTimeout = TimeSpan.MaxValue;
             binding.SendTimeout = TimeSpan.FromMinutes(10f);
 
@@ -86,10 +75,7 @@ namespace TMService.WCF
         public void StartHost()
         {
             host = new ServiceHost(typeof(Services));
-
-            host.AddServiceEndpoint(contract, binding, address_contract);
-            host.AddServiceEndpoint(data_contract, binding, address_data_contract);
-
+            host.AddServiceEndpoint(contract, binding, address);
             host.Open();
         }
 

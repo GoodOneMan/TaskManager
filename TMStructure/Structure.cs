@@ -46,6 +46,12 @@ namespace TMStructure
         public string Hint { get; set; }
         [DataMember]
         public User User { get; set; }
+        [DataMember]
+        public User BlockedUser { get; set; }
+        [DataMember]
+        public bool Enable { get; set; }
+        [DataMember]
+        public bool EditEnable { get; set; }
     }
 
     // Comment

@@ -43,7 +43,7 @@
                     Text="Прокомментировать"/>
                 
                 <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" 
-                          ItemsSource="{Binding Task.Comments}" 
+                          ItemsSource="{Binding Comments}" 
                           Grid.IsSharedSizeScope="True" 
                           Margin="5 0 5 0" 
                           ScrollViewer.IsDeferredScrollingEnabled="True">
@@ -56,8 +56,9 @@
                                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                                     <TextBlock Padding="6" TextWrapping="Wrap">
                                         <TextBlock.Text>
-                                            <MultiBinding StringFormat="{} User: {0} {1} {2}">
-                                                <Binding Path="User.Guid"></Binding>
+                                            <MultiBinding StringFormat="{} User: ( {0} ) {1} {2} {3}">
+                                                <Binding Path="User.Name"></Binding>
+                                                <Binding Path="User.Description"></Binding>
                                                 <Binding Source="{x:Static System:Environment.NewLine}"/>
                                                 <Binding Path="Message"></Binding>
                                             </MultiBinding>
@@ -86,12 +87,12 @@
 
 
                 <TextBox Grid.Row="2" Grid.ColumnSpan="2"
-                VerticalAlignment="Top"
-                AcceptsReturn="True"
-                TextWrapping="Wrap"
-                Margin="10,10,10,0"
-                Text="{Binding Message}"
-                materialDesign:HintAssist.Hint="сообщение"/>
+                    VerticalAlignment="Top"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    Margin="10,10,10,0"
+                    Text="{Binding Message}"
+                    materialDesign:HintAssist.Hint="сообщение"/>
 
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Margin="0" Width="122" Height="32" Padding="3" Command="{Binding SetComment_Command}" CommandParameter="{Binding ElementName=CWindow}">

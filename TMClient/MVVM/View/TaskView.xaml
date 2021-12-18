@@ -1,12 +1,70 @@
 ﻿<Window x:Class="TMClient.MVVM.View.TaskView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TMClient.MVVM.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:struct="clr-namespace:TMStructure;assembly=TMStructure"
+        xmlns:vm="clr-namespace:TMClient.MVVM.ViewModel"
+        xmlns:m="clr-namespace:TMClient.MVVM.Model"
+        xmlns:core="clr-namespace:TMClient.CORE"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="TaskView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Добавить задачу" Height="242" Width="230"
+        Background="Transparent" WindowStyle="None" AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        x:Name="TWindow"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.DataContext>
+        <vm:TaskViewModel />
+    </Window.DataContext>
+
+    <Border Background="#FF40626C" CornerRadius="10" BorderThickness="0">
+        <Border Background="#FFF2F3F0" CornerRadius="10" BorderThickness="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="66"/>
+                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="46"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                TextWrapping="Wrap"
+                Margin="10,10,10,0"
+                Text="{Binding ViewTitle}"/>
+
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2"
+                VerticalAlignment="Top"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                Margin="18,10,18,0"
+                Text="{Binding Title}"
+                materialDesign:HintAssist.Hint="название"/>
+
+                <TextBox Grid.Row="2" Grid.ColumnSpan="2"
+                VerticalAlignment="Top"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                Margin="18,10,18,18"
+                Text="{Binding Description}"
+                materialDesign:HintAssist.Hint="описание"/>
+
+                <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Margin="0" Width="122" Height="32" Padding="3" Command="{Binding Add_Command}" CommandParameter="{Binding ElementName=TWindow}">
+                        <materialDesign:PackIcon Kind="Check" />
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+    </Border>
 </Window>

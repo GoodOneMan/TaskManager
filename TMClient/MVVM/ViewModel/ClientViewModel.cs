@@ -14,15 +14,22 @@ namespace TMClient.MVVM.ViewModel
     class ClientViewModel : BaseViewModel, IObserver
     {
         Storage Storage = null;
+        HostClient HostClient = null;
+
         public ClientViewModel()
+        {
+            StartClient();
+        }
+
+        private void StartClient()
         {
             Storage = Storage.GetStorage();
             Storage.AddObserver(this);
+            HostClient = HostClient.GetClient();
 
-            Storage.HostClient = HostClient.GetClient();
-            if (Storage.HostClient.Connect())
+            if (HostClient.Connect())
             {
-                Storage.Tasks = Storage.HostClient.GetTasks();
+                Storage.Tasks = HostClient.GetTasks();
             }
         }
 
@@ -48,11 +55,13 @@ namespace TMClient.MVVM.ViewModel
                 return _closeWindow ?? (_closeWindow = new RelayCommand(
                     obj =>
                     {
-                        if (Storage.HostClient != null && Storage.HostClient.Desconnect())
+                        if (HostClient != null && HostClient.Desconnect())
                         {
-                            ClientView view = (ClientView)obj;
-                            view.Close();
+                            
                         }
+
+                        ClientView view = (ClientView)obj;
+                        view.Close();
 
                     }));
             }
@@ -82,22 +91,28 @@ namespace TMClient.MVVM.ViewModel
                         {
                             Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
 
+                            if (task.IsChecked)
+                            {
+                                task.BlockedUser = Storage.CurrentUser;
+                                task.Enable = false;
+                            }
+                            else
+                            {
+                                task.BlockedUser = null;
+                                task.Enable = true;
+                            }
+
                             ObservableCollection<Task> temp = new ObservableCollection<Task>();
                             foreach (Task t in Storage.Tasks)
-                            {
                                 if (t.IsChecked)
                                     temp.Add(t);
-                            }
+
                             foreach (Task t in Storage.Tasks)
-                            {
                                 if (!t.IsChecked)
                                     temp.Add(t);
-                            }
-                            Storage.Tasks.Clear();
-                            Storage.Tasks = temp;
 
-                            // Send service
-                            HostClient.GetClient().SendTask(task);
+                            Storage.Tasks = temp;
+                            HostClient.GetClient().SendTasks(Storage.Tasks);
                         }
                     }));
             }
@@ -110,37 +125,45 @@ namespace TMClient.MVVM.ViewModel
                 return _setComment ?? (_setComment = new RelayCommand(
                     obj =>
                     {
-                        Task task = (Task)obj;
-                        Storage.Task = task;
+                        Storage.Task = (Task)obj;
                         new CommentView().Show();
                     }));
             }
         }
-        public RelayCommand _changedTask;
-        public RelayCommand ChangedTask_Command
+        private RelayCommand _editTask;
+        public RelayCommand EditTask_Command
         {
             get
             {
-                return _changedTask ?? (_changedTask = new RelayCommand(
+                return _editTask ?? (_editTask = new RelayCommand(
                     obj =>
                     {
-                        Task task = (Task)obj;
-
-                        if (task != null)
-                        {
-
-                        }
-
+                        Storage.Task = (Task)obj;
+                        new TaskView().Show();
+                    }));
+            }
+        }
+        private RelayCommand _addask;
+        public RelayCommand AddTask_Command
+        {
+            get
+            {
+                return _addask ?? (_addask = new RelayCommand(
+                    obj =>
+                    {
+                        new TaskView().Show();
                     }));
             }
         }
         #endregion
 
-        public void UpdateProperty(Type type)
+        #region IObserver
+        public void UpdateProperty()
         {
             Tasks = new ObservableCollection<Task>();
             Tasks = Storage.Tasks;
             OnPropertyChanged("Tasks");
         }
+        #endregion
     }
 }

@@ -65,6 +65,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0"
+                                              IsEnabled="{Binding Enable}"
                                               IsChecked="{Binding IsChecked, Mode=TwoWay, NotifyOnTargetUpdated=True}" 
                                               Command="{Binding Path=DataContext.IsChecked_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               CommandParameter="{Binding}"/>
@@ -74,7 +75,7 @@
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{} {0} {1} {2} {3}">
                                                     <Binding Path="Title"></Binding>
-                                                    <Binding Path="User.Name"></Binding>
+                                                    <Binding Path="BlockedUser.Name" FallbackValue=""></Binding>
                                                     <Binding Source="{x:Static System:Environment.NewLine}"/>
                                                     <Binding Path="Description"></Binding>
                                                 </MultiBinding>
@@ -83,6 +84,7 @@
                                     </StackPanel>
 
                                     <materialDesign:PopupBox Grid.Column="2"
+                                                                     IsEnabled="{Binding Enable}"
                                                                      Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}" 
                                                                      Width="32"
                                                                      Height="32"
@@ -92,6 +94,12 @@
                                                                      Opened="PopupBox_OnOpened" 
                                                                      Closed="PopupBox_OnClosed">
                                         <StackPanel Orientation="Horizontal">
+                                            <Button ToolTip="редактировать задачу"
+                                                    IsEnabled="{Binding EditEnable}"
+                                                    Command="{Binding Path=DataContext.EditTask_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="Edit" />
+                                            </Button>
                                             <Button ToolTip="комментировать задачу"
                                                     Command="{Binding Path=DataContext.SetComment_Command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">

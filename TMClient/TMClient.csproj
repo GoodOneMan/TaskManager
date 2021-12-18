@@ -77,7 +77,6 @@
     </Compile>
     <Compile Include="WCF\HostClient.cs" />
     <Compile Include="WCF\IContract_Service.cs" />
-    <Compile Include="WCF\IDataContract_Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CORE\BaseViewModel.cs" />
