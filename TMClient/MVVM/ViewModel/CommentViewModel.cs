@@ -51,21 +51,25 @@ namespace TMClient.MVVM.ViewModel
                       CommentView view = (CommentView)obj;
                       if (!String.IsNullOrEmpty(Message))
                       {
-                          Comments.Add(
-                              new Comment()
-                              {
-                                  Guid = Guid.NewGuid(),
-                                  Message = Message,
-                                  TaskGuid = Storage.Task.Guid,
-                                  User = Storage.CurrentUser
-                              }
-                            );
+                          Comment Comment = new Comment();
+                          Comment.Guid = Guid.NewGuid();
+                          Comment.Message = Message;
+                          Comment.TaskGuid = Storage.Task.Guid;
+                          Comment.User = Storage.CurrentUser;
+
+                          Comments.Add(Comment);
+
+                          if (Storage.Task.Hint == "комментариев нет")
+                              Storage.Task.Hint = "";
+
+                          Storage.Task.Hint += String.Format("{0}{1}{2}{1}", Comment.User.Name, Environment.NewLine, Comment.Message);
+                          
                           HostClient.GetClient().SendTask(Storage.Task);
+                          
                       }
 
                       Storage.ImplementTask(Storage.Task);
-                      Storage.NotifyObservers();
-
+                      Storage.Task = null;
                       view.Close();
                   }));
             }

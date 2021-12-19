@@ -153,7 +153,14 @@ namespace TMClient.WCF
         public void ContractCallback_Task(User User, Task task)
         {
             int index = Storage.GetStorage().Tasks.IndexOf(Storage.GetStorage().Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
-            Storage.GetStorage().Tasks[index] = task;
+            if(index != -1)
+            {
+                Storage.GetStorage().Tasks[index] = task;
+            }
+            else
+            {
+                Storage.GetStorage().Tasks.Add(task);
+            }
             Storage.NotifyObservers();
         }
         public void ContractCallback_AllTasks(User User, ObservableCollection<Task> tasks)

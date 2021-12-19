@@ -79,24 +79,21 @@ namespace TMClient.MVVM.ViewModel
                             task.BlockedUser = null;
                             task.EditEnable = true;
 
-                            Storage.Tasks.Add(task);
-                            HostClient.GetClient().SendTasks(Storage.Tasks);
+                            Storage.Task = task;
                         }
                         else
                         {
                             Storage.Task.Title = Title;
                             Storage.Task.Description = Description;
-                            HostClient.GetClient().SendTask(Storage.Task);
-                            Storage.ImplementTask(Storage.Task);
+                            
                         }
+                        
+                        HostClient.GetClient().SendTasks(Storage.Tasks);
 
-                        Storage.NotifyObservers();
-                    }
-                    else
-                    {
-                        Storage.Task = null;
+                        Storage.ImplementTask(Storage.Task);
                     }
 
+                    Storage.Task = null;
                     view.Close();
                 }));
             }

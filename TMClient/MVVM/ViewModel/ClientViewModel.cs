@@ -79,6 +79,7 @@ namespace TMClient.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _isChecked;
         public RelayCommand IsChecked_Command
         {
@@ -117,6 +118,7 @@ namespace TMClient.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _setComment;
         public RelayCommand SetComment_Command
         {
@@ -130,6 +132,7 @@ namespace TMClient.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _editTask;
         public RelayCommand EditTask_Command
         {

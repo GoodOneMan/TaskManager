@@ -94,6 +94,7 @@ namespace TMService.MVVM.ViewModel
             }
         }
 
+        // ???
         private bool _userSelect = true;
         public bool UserSelect
         {
@@ -149,6 +150,7 @@ namespace TMService.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _startOrStopService;
         public RelayCommand StartStopService_Command
         {
@@ -164,6 +166,7 @@ namespace TMService.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _isChecked;
         public RelayCommand IsChecked_Command
         {
@@ -187,8 +190,6 @@ namespace TMService.MVVM.ViewModel
                                 task.Enable = true;
                             }
 
-                            //task.BlockedUser = Storage.CurrentUser;
-                            //task.Enable = false;
 
                             ObservableCollection<Task> temp = new ObservableCollection<Task>();
                             foreach (Task t in Storage.Tasks)
@@ -205,6 +206,7 @@ namespace TMService.MVVM.ViewModel
                     }));
             }
         }
+
         private RelayCommand _addask;
         public RelayCommand AddTask_Command
         {
@@ -214,19 +216,6 @@ namespace TMService.MVVM.ViewModel
                     obj =>
                     {
                         new TaskView().Show();
-                    }));
-            }
-        }
-        private RelayCommand _setComment;
-        public RelayCommand SetComment_Command
-        {
-            get
-            {
-                return _setComment ?? (_setComment = new RelayCommand(
-                    obj =>
-                    {
-                        Storage.Task = (Task)obj;
-                        new CommentView().Show();
                     }));
             }
         }
@@ -240,6 +229,20 @@ namespace TMService.MVVM.ViewModel
                     {
                         Storage.Task = (Task)obj;
                         new TaskView().Show();
+                    }));
+            }
+        }
+
+        private RelayCommand _setComment;
+        public RelayCommand SetComment_Command
+        {
+            get
+            {
+                return _setComment ?? (_setComment = new RelayCommand(
+                    obj =>
+                    {
+                        Storage.Task = (Task)obj;
+                        new CommentView().Show();
                     }));
             }
         }

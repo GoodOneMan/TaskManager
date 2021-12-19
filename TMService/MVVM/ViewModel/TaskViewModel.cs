@@ -62,6 +62,7 @@ namespace TMService.MVVM.ViewModel
                       {
                           if (IsNew)
                           {
+
                               Task task = new Task();
 
                               task.Title = Title;
@@ -70,28 +71,27 @@ namespace TMService.MVVM.ViewModel
                               task.Guid = Guid.NewGuid();
                               task.IsChecked = false;
                               task.State = false;
-                              task.Hint = "новая задача";
+                              task.Hint = "комментариев нет";
                               task.User = Storage.CurrentUser;
                               task.Enable = true;
                               task.BlockedUser = null;
                               task.EditEnable = true;
 
-                              Storage.Tasks.Add(task);
-                              Storage.NotifyObservers();
+                              Storage.Task = task;
                           }
                           else
                           {
                               Storage.Task.Title = Title;
                               Storage.Task.Description = Description;
-                              Storage.ImplementTask(Storage.Task);
                           }
 
-                          Storage.OnTasksChanged(new TasksChangedEventArgs(null, Storage.Tasks));
+                          Storage.OnTaskChanged(new TaskChangedEventArgs(null, Storage.Task));
+
+                          Storage.ImplementTask(Storage.Task);
+                          
                       }
-                      else
-                      {
-                          Storage.Task = null;
-                      }
+
+                      Storage.Task = null;
                       view.Close();
                   }));
             }

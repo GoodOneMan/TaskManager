@@ -32,7 +32,6 @@ namespace TMService.MVVM.Model
         private string[] comments = null;
 
         private SQLiteConnection connection = null;
-        // private SQLiteCommand command = null;
         private SQLiteTransaction transaction = null;
 
         private ObservableCollection<User> Users = null;
@@ -67,6 +66,19 @@ namespace TMService.MVVM.Model
             users = new string[] { "USERS", "id", "name", "host", "description", "guid" };
             tasks = new string[] { "TASKS", "id", "title", "description", "guid", "ischecked", "state", "hint", "user_guid", "blocked_user_guid", "enable", "edit_enable" };
             comments = new string[] { "COMMENTS", "id", "user_guid", "task_guid", "guid", "message" };
+        }
+
+        private void CreateTables(string[] fields)
+        {
+            string query = "";
+            for (int i = 2; i < fields.Length; i++)
+            {
+                query += fields[i] + " TEXT,";
+            }
+            query = String.Format("CREATE TABLE IF NOT EXISTS '{0}' (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {1} );", fields[0], query.TrimEnd(','));
+            SQLiteCommand command = new SQLiteCommand(query, connection);
+            command.ExecuteNonQuery();
+            command.Dispose();
         }
 
         #region Start service
@@ -157,14 +169,10 @@ namespace TMService.MVVM.Model
                 task.User = GetUser(new Guid(reader.GetValue(7).ToString()));
 
                 if(new Guid(reader.GetValue(8).ToString()) == new Guid())
-                {
                     task.BlockedUser = null;
-                }
                 else
-                {
                     task.BlockedUser = GetUser(new Guid(reader.GetValue(8).ToString()));
-                }
-                
+
                 task.Enable = Convert.ToBoolean(reader.GetValue(9).ToString());
                 task.EditEnable = Convert.ToBoolean(reader.GetValue(10).ToString());
                 // GetComments(Guid taskGuid)
@@ -293,51 +301,61 @@ namespace TMService.MVVM.Model
 
                 name = name.TrimEnd(',');
 
-                string value = "";
+                // Set value
+                string value = "'" + task.Title 
+                    + "', '" + task.Description 
+                    + "', '" + task.Guid 
+                    + "', '" + task.IsChecked 
+                    + "', '" + task.State 
+                    + "', '" + task.Hint 
+                    + "', '" + task.User.Guid 
+                    + "', '";
+
                 if (task.BlockedUser == null)
-                    value = "'" + task.Title + "', '" + task.Description + "', '" + task.Guid + "', '" + task.IsChecked + "', '" + task.State + "', '" + task.Hint + "', '" + task.User.Guid + "', '" + new Guid() + "', '" + task.Enable + "', '" + task.EditEnable + "'";
+                    value += new Guid();
                 else
-                    value = "'" + task.Title + "', '" + task.Description + "', '" + task.Guid + "', '" + task.IsChecked + "', '" + task.State + "', '" + task.Hint + "', '" + task.User.Guid + "', '" + task.BlockedUser.Guid + "', '" + task.Enable + "', '" + task.EditEnable + "'";
+                    value += task.BlockedUser.Guid;
 
+                value += "', '" + task.Enable + "', '" + task.EditEnable + "'";
 
+                // Set query
                 string query = String.Format("INSERT INTO 'TASKS' ({0}) VALUES ({1});", name, value);
 
                 SQLiteCommand command = new SQLiteCommand(query, connection);
                 command.ExecuteNonQuery();
+                command.Dispose();
 
-                foreach (Comment comment in task.Comments)
-                {
-                    name = "";
-                    for (int i = 2; i < comments.Length; i++)
-                        name += "'" + comments[i] + "',";
+                // Insert comments
+                InsertComments(task.Comments);
 
-                    name = name.TrimEnd(',');
-                    value = "'" + comment.User.Guid + "', '" + comment.TaskGuid + "', '" + comment.Guid + "', '" + comment.Message + "'";
-                    query = String.Format("INSERT INTO 'COMMENTS' ({0}) VALUES ({1});", name, value);
+            }
+        }
 
-                    SQLiteCommand command_c = new SQLiteCommand(query, connection);
-                    command_c.ExecuteNonQuery();
-                    command_c.Dispose();
-                }
+        private void InsertComments(ObservableCollection<Comment> _comments)
+        {
+            foreach (Comment comment in _comments)
+            {
+                string name = "";
+                for (int i = 2; i < comments.Length; i++)
+                    name += "'" + comments[i] + "',";
 
+                name = name.TrimEnd(',');
+
+                string value = "'" + comment.User.Guid 
+                    + "', '" + comment.TaskGuid 
+                    + "', '" + comment.Guid 
+                    + "', '" + comment.Message + "'";
+
+                string query = String.Format("INSERT INTO 'COMMENTS' ({0}) VALUES ({1});", name, value);
+
+                SQLiteCommand command = new SQLiteCommand(query, connection);
+                command.ExecuteNonQuery();
                 command.Dispose();
             }
         }
-
         #endregion
         #endregion
 
-        private void CreateTables(string[] fields)
-        {
-            string query = "";
-            for (int i = 2; i < fields.Length; i++)
-            {
-                query += fields[i] + " TEXT,";
-            }
-            query = String.Format("CREATE TABLE IF NOT EXISTS '{0}' (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {1} );", fields[0], query.TrimEnd(','));
-            SQLiteCommand command = new SQLiteCommand(query, connection);
-            command.ExecuteNonQuery();
-            command.Dispose();
-        }
+        
     }
 }

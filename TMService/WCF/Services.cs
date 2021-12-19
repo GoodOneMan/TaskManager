@@ -57,7 +57,6 @@ namespace TMService.WCF
                 user.OCtx = OperationContext.Current;
 
                 Storage.DispatcherUI.Invoke(()=> { Storage.Users.Add(user); });
-
                 OnLogChanged(new LogChangedEventArgs(String.Format("новый пользователь {0} подключился в {1}", user.Description, DateTime.Now.ToString())));
             }
             else
@@ -118,7 +117,7 @@ namespace TMService.WCF
             if (tasks == null)
                 return false;
 
-            Storage.Tasks = tasks;
+            Storage.DispatcherUI.Invoke(() => { Storage.Tasks = tasks; });
 
             Callback_AllTasks(UserGuid, Storage.Tasks);
 
