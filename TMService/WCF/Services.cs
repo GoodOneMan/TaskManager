@@ -99,16 +99,8 @@ namespace TMService.WCF
         {
             if (task == null)
                 return false;
-
-            Storage.DispatcherUI.Invoke(() =>
-            {
-                int index = Storage.Tasks.IndexOf(Storage.Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
-                Storage.Tasks[index] = task;
-                Storage.NotifyObservers();
-            });
-
-            Callback_Task(UserGuid, Storage.Task);
-
+            Storage.DispatcherUI.Invoke(() => { Storage.ImplementTask(task); });
+            Callback_Task(UserGuid, task);
             return true;
         }
         // User guid
@@ -116,10 +108,8 @@ namespace TMService.WCF
         {
             if (tasks == null)
                 return false;
-
             Storage.DispatcherUI.Invoke(() => { Storage.Tasks = tasks; });
-
-            Callback_AllTasks(UserGuid, Storage.Tasks);
+            Callback_AllTasks(UserGuid, tasks);
 
             return true;
         }
@@ -135,7 +125,7 @@ namespace TMService.WCF
                 {
                     try
                     {
-                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_Task(CallbackUser, Storage.Task);
+                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_Task(CallbackUser, task);
                     }
                     catch (Exception ex) { }
                 }
@@ -151,7 +141,7 @@ namespace TMService.WCF
                 {
                     try
                     {
-                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_AllTasks(CallbackUser, Storage.Tasks);
+                        user.OCtx.GetCallbackChannel<IContract_Callback>().ContractCallback_AllTasks(CallbackUser, tasks);
                     }
                     catch (Exception ex) { }
                 }
@@ -162,17 +152,11 @@ namespace TMService.WCF
         #region Event changed task
         public void ServiceEvent_TaskChanged(object sender, TaskChangedEventArgs e)
         {
-            if(e.User == null)
-                Callback_Task(Storage.CurrentUser.Guid, e.Task);
-            else
-                Callback_Task(e.User.Guid, e.Task);
+            Callback_Task(e.User.Guid, e.Task);
         }
         public void ServiceEvent_TasksChanged(object sender, TasksChangedEventArgs e)
         {
-            if (e.User == null)
-                Callback_AllTasks(Storage.CurrentUser.Guid, e.Tasks);
-            else
-                Callback_AllTasks(e.User.Guid, e.Tasks);
+            Callback_AllTasks(e.User.Guid, e.Tasks);
         }
         #endregion
     }

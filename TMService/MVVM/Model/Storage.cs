@@ -152,13 +152,8 @@ namespace TMService.MVVM.Model
         public void GetState()
         {
             DataBase.GetDB().Connection();
-
-            Tasks = DataBase.GetDB().GetT();
+            #region Users
             Users = DataBase.GetDB().GetU();
-
-            //if (Users.FirstOrDefault(item => item.Name == CurrentUser.Name && item.Host == CurrentUser.Host) == null)
-            //    Users.Add(CurrentUser);
-
             User User = Users.FirstOrDefault(item => item.Name == CurrentUser.Name && item.Host == CurrentUser.Host);
             if(User == null)
             {
@@ -177,7 +172,10 @@ namespace TMService.MVVM.Model
             {
                 CurrentUser = User;
             }
+            #endregion
 
+
+            Tasks = DataBase.GetDB().GetT();
 
             Log = new ObservableCollection<string>();
             Hosts = new Dictionary<string, string>();
@@ -196,7 +194,7 @@ namespace TMService.MVVM.Model
 
         public void ImplementTask(Task task)
         {
-            int index = Tasks.IndexOf(Tasks.FirstOrDefault(iten => iten.Guid == task.Guid));
+            int index = Tasks.IndexOf(Tasks.FirstOrDefault(item => item.Guid == task.Guid));
             if(index != -1)
             {
                 Tasks[index] = BlockedTask(task);

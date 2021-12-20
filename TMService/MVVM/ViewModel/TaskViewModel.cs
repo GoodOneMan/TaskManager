@@ -85,7 +85,7 @@ namespace TMService.MVVM.ViewModel
                               Storage.Task.Description = Description;
                           }
 
-                          Storage.OnTaskChanged(new TaskChangedEventArgs(null, Storage.Task));
+                          Storage.OnTaskChanged(new TaskChangedEventArgs(Storage.CurrentUser, Storage.Task));
 
                           Storage.ImplementTask(Storage.Task);
                           

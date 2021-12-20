@@ -37,5 +37,6 @@ namespace TMService.MVVM.View
         {
             Console.WriteLine("Just making sure the popup has closed.");
         }
+
     }
 }

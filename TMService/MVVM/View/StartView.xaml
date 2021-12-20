@@ -11,6 +11,7 @@
         xmlns:local="clr-namespace:TMService.MVVM.View"
         xmlns:vm="clr-namespace:TMService.MVVM.ViewModel"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Height="560" Width="1200"
         Background="Transparent" WindowStyle="None" AllowsTransparency="True"
@@ -28,6 +29,14 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <CollectionViewSource x:Key="Tasks" Source="{Binding Tasks}">
+                <!--<CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="IsChecked" Direction="Ascending" />
+                </CollectionViewSource.SortDescriptions>-->
+                <!--<CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="BlockedUser"/>
+                </CollectionViewSource.GroupDescriptions>-->
+            </CollectionViewSource>
         </ResourceDictionary>
     </Window.Resources>
     
@@ -147,16 +156,17 @@
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>
                     <!-- Task Data -->
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
+                    <!--<ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks, UpdateSourceTrigger=PropertyChanged}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">-->
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding  Source={StaticResource Tasks}}" Grid.IsSharedSizeScope="True" Margin="12 0 12 0" ScrollViewer.IsDeferredScrollingEnabled="True">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type struct:Task}" >
                                 <Border x:Name="Border" Padding="8">
-                                    <Grid ToolTip="{Binding Hint}" ToolTipService.Placement="Left">
-                                        <!--<Grid.ToolTip>
-                                            <ToolTip Placement="Left">
-                                                <Binding Path="Hint"></Binding>
-                                            </ToolTip> 
-                                        </Grid.ToolTip>-->
+                                    <Grid>
+                                        <Grid.ToolTip>
+                                            <ToolTip Placement="Right" MaxWidth="400" ToolTipService.ShowDuration="60">
+                                                <TextBlock Text="{Binding Hint}" TextWrapping="Wrap"></TextBlock>
+                                            </ToolTip>
+                                        </Grid.ToolTip>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition SharedSizeGroup="Checkerz" />
                                             <ColumnDefinition />
@@ -172,7 +182,7 @@
                                         <StackPanel  Margin="8 0 0 0" Grid.Column="1">
                                             <TextBlock Padding="6" TextWrapping="Wrap">
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{} {0} {1} {2} {3}">
+                                                    <MultiBinding StringFormat="{}{0} {1}{2}{3}">
                                                         <Binding Path="Title"></Binding>
                                                         <Binding Path="BlockedUser.Name" FallbackValue=""></Binding>
                                                         <Binding Source="{x:Static System:Environment.NewLine}"/>

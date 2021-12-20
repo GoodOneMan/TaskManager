@@ -177,7 +177,7 @@ namespace TMService.MVVM.ViewModel
                     {
                         if (obj != null)
                         {
-                            Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
+                            Task task = (Task)obj;
 
                             if (task.IsChecked)
                             {
@@ -190,18 +190,8 @@ namespace TMService.MVVM.ViewModel
                                 task.Enable = true;
                             }
 
-
-                            ObservableCollection<Task> temp = new ObservableCollection<Task>();
-                            foreach (Task t in Storage.Tasks)
-                                if (t.IsChecked)
-                                    temp.Add(t);
-
-                            foreach (Task t in Storage.Tasks)
-                                if (!t.IsChecked)
-                                    temp.Add(t);
-
-                            Storage.Tasks = temp;
-                            Storage.OnTasksChanged(new TasksChangedEventArgs(Storage.CurrentUser, Storage.Tasks));
+                            Storage.OnTaskChanged(new TaskChangedEventArgs(Storage.CurrentUser, task));
+                            Storage.ImplementTask(task);
                         }
                     }));
             }

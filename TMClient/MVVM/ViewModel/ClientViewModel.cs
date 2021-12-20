@@ -90,7 +90,7 @@ namespace TMClient.MVVM.ViewModel
                     {
                         if (obj != null)
                         {
-                            Task task = Storage.Tasks.FirstOrDefault(item => item.Guid == ((Task)obj).Guid);
+                            Task task = (Task)obj;
 
                             if (task.IsChecked)
                             {
@@ -103,17 +103,9 @@ namespace TMClient.MVVM.ViewModel
                                 task.Enable = true;
                             }
 
-                            ObservableCollection<Task> temp = new ObservableCollection<Task>();
-                            foreach (Task t in Storage.Tasks)
-                                if (t.IsChecked)
-                                    temp.Add(t);
+                            HostClient.GetClient().SendTask(task);
 
-                            foreach (Task t in Storage.Tasks)
-                                if (!t.IsChecked)
-                                    temp.Add(t);
-
-                            Storage.Tasks = temp;
-                            HostClient.GetClient().SendTasks(Storage.Tasks);
+                            Storage.ImplementTask(task);
                         }
                     }));
             }
